@@ -1,12 +1,10 @@
 package com.ironman.pharmasales.expose.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ironman.pharmasales.application.dto.category.CategoryDto;
-import com.ironman.pharmasales.application.dto.category.CategorySaveDto;
-import com.ironman.pharmasales.persistence.entity.Category;
-import com.ironman.pharmasales.persistence.repository.CategoryRepository;
-import com.ironman.pharmasales.shared.state.enums.State;
+import com.ironman.pharmasales.old.application.dto.category.CategorySaveDto;
+import com.ironman.pharmasales.old.persistence.entity.Category;
+import com.ironman.pharmasales.old.persistence.repository.CategoryRepository;
+import com.ironman.pharmasales.old.shared.state.enums.State;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,8 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @AutoConfigureMockMvc
