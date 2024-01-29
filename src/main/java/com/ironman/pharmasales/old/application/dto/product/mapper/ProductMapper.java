@@ -4,7 +4,7 @@ import com.ironman.pharmasales.old.application.dto.product.ProductDto;
 import com.ironman.pharmasales.old.application.dto.product.ProductFilterDto;
 import com.ironman.pharmasales.old.application.dto.product.ProductMediumDto;
 import com.ironman.pharmasales.old.application.dto.product.ProductSaveDto;
-import com.ironman.pharmasales.old.application.dto.subcategory.mapper.SubcategoryMapper;
+import com.ironman.pharmasales.products.application.mapper.SubcategoryMapper;
 import com.ironman.pharmasales.old.persistence.entity.Product;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;

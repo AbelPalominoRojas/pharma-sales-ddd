@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.products.domain.model.category;
+package com.ironman.pharmasales.products.domain.model.subcategory;
 
 import com.ironman.pharmasales.shared.domain.page.PageableRequest;
 import lombok.AllArgsConstructor;
@@ -14,9 +14,10 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryFilterDomain extends PageableRequest {
+public class SubcategoryFilterDomain extends PageableRequest {
     private String name;
     private String description;
+    private Long categoryId;
     private String state;
     private LocalDate createdAtFrom;
     private LocalDate createdAtTo;

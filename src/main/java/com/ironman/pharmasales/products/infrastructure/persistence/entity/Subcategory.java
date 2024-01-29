@@ -1,19 +1,17 @@
-package com.ironman.pharmasales.old.persistence.entity;
+package com.ironman.pharmasales.products.infrastructure.persistence.entity;
 
-import com.ironman.pharmasales.products.infrastructure.persistence.entity.Category;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-// Lombok Start
-@Data
-// Lombok End
-
-// JPA Start
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "subcategories")
-// JPA End
 public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

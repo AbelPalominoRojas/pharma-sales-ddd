@@ -1,15 +1,15 @@
 package com.ironman.pharmasales.products.infrastructure.web;
 
-import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import com.ironman.pharmasales.products.application.dto.category.CategoryDto;
 import com.ironman.pharmasales.products.application.dto.category.CategoryFilterDto;
 import com.ironman.pharmasales.products.application.dto.category.CategorySaveDto;
-import com.ironman.pharmasales.products.application.dto.category.CategorySimpleDto;
+import com.ironman.pharmasales.products.application.dto.category.CategorySmallDto;
 import com.ironman.pharmasales.products.application.service.CategoryService;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
 import com.ironman.pharmasales.shared.domain.exception.model.GeneralError;
 import com.ironman.pharmasales.shared.domain.page.PageResponse;
+import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,8 +35,8 @@ public class CategoryController {
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
-    ResponseEntity<List<CategoryDto>> findAll() {
-        List<CategoryDto> categories = categoryService.findAll();
+    ResponseEntity<List<CategorySmallDto>> findAll() {
+        List<CategorySmallDto> categories = categoryService.findAll();
 
         return ResponseEntity.ok(categories);
     }
@@ -118,23 +118,6 @@ public class CategoryController {
 
         return ResponseEntity.ok(category);
     }
-
-    @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/select")
-    ResponseEntity<List<CategorySimpleDto>> select() {
-        List<CategorySimpleDto> categories = categoryService.select();
-
-        return ResponseEntity.ok(categories);
-    }
-
-    @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/search-by-state/{state}")
-    ResponseEntity<List<CategorySimpleDto>> searchByState(@PathVariable("state") String state) {
-        List<CategorySimpleDto> categories = categoryService.searchByState(state);
-
-        return ResponseEntity.ok(categories);
-    }
-
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping("/page-filter")

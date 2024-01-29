@@ -1,26 +1,30 @@
-package com.ironman.pharmasales.old.expose.web;
+package com.ironman.pharmasales.products.infrastructure.web;
 
-import com.ironman.pharmasales.old.application.dto.subcategory.SubcategoryDto;
-import com.ironman.pharmasales.old.application.dto.subcategory.SubcategoryFilterDto;
-import com.ironman.pharmasales.old.application.dto.subcategory.SubcategorySaveDto;
-import com.ironman.pharmasales.old.application.service.SubcategoryService;
-import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
+import com.ironman.pharmasales.products.application.dto.subcategory.SubcategoryDto;
+import com.ironman.pharmasales.products.application.dto.subcategory.SubcategoryFilterDto;
+import com.ironman.pharmasales.products.application.dto.subcategory.SubcategorySaveDto;
+import com.ironman.pharmasales.products.application.dto.subcategory.SubcategorySmallDto;
+import com.ironman.pharmasales.products.application.service.SubcategoryService;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
 import com.ironman.pharmasales.shared.domain.exception.model.GeneralError;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
+import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,8 +34,8 @@ public class SubcategoryController {
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
-    public ResponseEntity<List<SubcategoryDto>> findAll() {
-        List<SubcategoryDto> subcategories = subcategoryService.findAll();
+    public ResponseEntity<List<SubcategorySmallDto>> findAll() {
+        List<SubcategorySmallDto> subcategories = subcategoryService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(subcategories);
@@ -41,7 +45,7 @@ public class SubcategoryController {
     @ApiResponse(
             responseCode = StatusCode.NOT_FOUND,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GeneralError.class)
             )
     )
@@ -57,14 +61,14 @@ public class SubcategoryController {
     @ApiResponse(
             responseCode = StatusCode.BAD_REQUEST,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ArgumentNotValidError.class)
             )
     )
     @ApiResponse(
             responseCode = StatusCode.NOT_FOUND,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GeneralError.class)
             )
     )
@@ -82,14 +86,14 @@ public class SubcategoryController {
     @ApiResponse(
             responseCode = StatusCode.BAD_REQUEST,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ArgumentNotValidError.class)
             )
     )
     @ApiResponse(
             responseCode = StatusCode.NOT_FOUND,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GeneralError.class)
             )
     )
@@ -108,7 +112,7 @@ public class SubcategoryController {
     @ApiResponse(
             responseCode = StatusCode.NOT_FOUND,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GeneralError.class)
             )
     )
@@ -120,20 +124,46 @@ public class SubcategoryController {
                 .body(subcategory);
     }
 
-    @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/filter")
-    public ResponseEntity<List<SubcategoryDto>> filter(Optional<SubcategoryFilterDto> filter) {
-
-        List<SubcategoryDto> subcategories = subcategoryService.filter(filter);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(subcategories);
-    }
 
     @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/pagination-filter")
-    public ResponseEntity<Page<SubcategoryDto>> paginationFilter(Pageable pageable, Optional<SubcategoryFilterDto> filter) {
-        Page<SubcategoryDto> subcategoryDtoPage = subcategoryService.paginationFilter(pageable, filter);
+    @GetMapping("/page-filter")
+    public ResponseEntity<PageResponse<SubcategoryDto>> pageFilter(
+            @NotNull(message = "El campo page es requerido")
+            @Min(value = 1, message = "El número de página debe ser positivo")
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @NotNull(message = "El campo size es requerido")
+            @Min(value = 1, message = "El tamaño de la página debe ser positivo")
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "description", required = false) String description,
+            @Pattern(regexp = "^\\d*$", message = "El número debe contener solo dígitos")
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @Pattern(regexp = "^[AE]$", message = "El estado debe ser 'A' o 'E'")
+            @RequestParam(name = "state", required = false) String state,
+            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "La fecha debe estar en el formato yyyy-MM-dd")
+            @RequestParam(name = "createdAtFrom", required = false) LocalDate createdAtFrom,
+            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "La fecha debe estar en el formato yyyy-MM-dd")
+            @RequestParam(name = "createdAtTo", required = false) LocalDate createdAtTo,
+            @Pattern(regexp = "^(name|createdAt)$", message = "La dirección debe ser 'name' o 'createdAt'")
+            @RequestParam(name = "sort", required = false) String sort,
+            @Pattern(regexp = "^(ASC|DESC)$", message = "La dirección debe ser 'ASC' o 'DESC'")
+            @RequestParam(name = "direction", required = false) String direction
+    ) {
+        SubcategoryFilterDto filter = SubcategoryFilterDto.builder()
+                .page(page)
+                .size(size)
+                .name(name)
+                .description(description)
+                .categoryId(categoryId)
+                .state(state)
+                .createdAtFrom(createdAtFrom)
+                .createdAtTo(createdAtTo)
+                .sort(sort)
+                .direction(direction)
+                .build();
+
+
+        PageResponse<SubcategoryDto> subcategoryDtoPage = subcategoryService.findAll(filter);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(subcategoryDtoPage);

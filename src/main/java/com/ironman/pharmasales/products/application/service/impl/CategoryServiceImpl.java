@@ -5,7 +5,7 @@ import com.ironman.pharmasales.shared.application.string.StringHelper;
 import com.ironman.pharmasales.products.application.dto.category.CategoryDto;
 import com.ironman.pharmasales.products.application.dto.category.CategoryFilterDto;
 import com.ironman.pharmasales.products.application.dto.category.CategorySaveDto;
-import com.ironman.pharmasales.products.application.dto.category.CategorySimpleDto;
+import com.ironman.pharmasales.products.application.dto.category.CategorySmallDto;
 import com.ironman.pharmasales.products.application.mapper.CategoryMapper;
 import com.ironman.pharmasales.products.application.service.CategoryService;
 import com.ironman.pharmasales.products.domain.model.category.CategoryDomain;
@@ -28,10 +28,10 @@ public class CategoryServiceImpl extends PageBuild<CategoryDto> implements Categ
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAll() {
-        return categoryPort.findAll()
+    public List<CategorySmallDto> findAll() {
+        return categoryPort.findByState(State.ACTIVE.getValue())
                 .stream()
-                .map(categoryMapper::toDto)
+                .map(categoryMapper::toSmallDto)
                 .toList();
     }
 
@@ -58,7 +58,7 @@ public class CategoryServiceImpl extends PageBuild<CategoryDto> implements Categ
         CategoryDomain categoryDb = categoryPort.findById(id)
                 .orElseThrow(getCategoryNotFound(id));
 
-        categoryMapper.update(categoryDb, categoryBody);
+        categoryMapper.updateDomain(categoryDb, categoryBody);
 
         categoryDb.setKeyword(new StringHelper().slugsKeywords(categoryBody.getName()));
         categoryDb.setUpdatedAt(LocalDateTime.now());
@@ -74,22 +74,6 @@ public class CategoryServiceImpl extends PageBuild<CategoryDto> implements Categ
         categoryDb.setState(State.DISABLE.getValue());
 
         return categoryMapper.toDto(categoryPort.save(categoryDb));
-    }
-
-    @Override
-    public List<CategorySimpleDto> select() {
-        return categoryPort.findByState(State.ACTIVE.getValue())
-                .stream()
-                .map(categoryMapper::toSimpleDto)
-                .toList();
-    }
-
-    @Override
-    public List<CategorySimpleDto> searchByState(String state) {
-        return categoryPort.searchByState(state)
-                .stream()
-                .map(categoryMapper::toSimpleDto)
-                .toList();
     }
 
     @Override

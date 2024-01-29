@@ -7,7 +7,7 @@ import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDto> findAll();
+    List<CategorySmallDto> findAll();
 
     CategoryDto findById(Long id) throws DataNotFoundException;
 
@@ -16,10 +16,6 @@ public interface CategoryService {
     CategoryDto edit(Long id, CategorySaveDto categoryBody) throws DataNotFoundException;
 
     CategoryDto disabled(Long id) throws DataNotFoundException;
-
-    List<CategorySimpleDto> select();
-
-    List<CategorySimpleDto> searchByState(String state);
 
     PageResponse<CategoryDto> findAll(CategoryFilterDto pageable);
 }
