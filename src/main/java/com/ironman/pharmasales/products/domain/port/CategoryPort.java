@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface CategoryPort {
     List<CategoryDomain> findAll();
     List<CategoryDomain> findByState(String state);
-    List<CategoryDomain> searchByState(String state);
     Optional<CategoryDomain> findById(Long id);
     CategoryDomain save(CategoryDomain categoryDomain);
     PageResponse<CategoryDomain> findAll(CategoryFilterDomain filter);

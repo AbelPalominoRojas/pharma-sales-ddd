@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.persistence.entity;
+package com.ironman.pharmasales.products.infrastructure.persistence.entity;
 
 import com.ironman.pharmasales.products.infrastructure.persistence.entity.Subcategory;
 import jakarta.persistence.*;

@@ -18,6 +18,7 @@ public interface SubcategoryMapper {
 
     SubcategoryDto toDto(SubcategoryDomain subcategory);
 
+    @Mapping(target = "categoryId", source = "subcategory.id")
     SubcategorySmallDto toSmallDto(SubcategoryDomain subcategory);
     SubcategoryMediumDto toMediumDto(SubcategoryDomain subcategory);
 

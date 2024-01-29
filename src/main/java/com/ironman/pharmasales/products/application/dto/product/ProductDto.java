@@ -1,13 +1,17 @@
-package com.ironman.pharmasales.old.application.dto.product;
+package com.ironman.pharmasales.products.application.dto.product;
 
 import com.ironman.pharmasales.products.application.dto.subcategory.SubcategoryMediumDto;
 import com.ironman.pharmasales.shared.application.state.enums.State;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDto {
     private Long id;
     private String name;

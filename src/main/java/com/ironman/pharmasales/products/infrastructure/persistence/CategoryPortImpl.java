@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements CategoryPort{
+public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements CategoryPort {
 
     private final CategoryRepository categoryRepository;
     private final CategoryEntityMapper categoryMapper;
@@ -35,14 +35,6 @@ public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements C
     @Override
     public List<CategoryDomain> findByState(String state) {
         return categoryRepository.findByState(state)
-                .stream()
-                .map(categoryMapper::toDomain)
-                .toList();
-    }
-
-    @Override
-    public List<CategoryDomain> searchByState(String state) {
-        return categoryRepository.searchByState(state)
                 .stream()
                 .map(categoryMapper::toDomain)
                 .toList();
@@ -65,7 +57,7 @@ public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements C
 
     @Override
     public PageResponse<CategoryDomain> findAll(CategoryFilterDomain filter) {
-        Pageable pageableRequest = PageRequest.of(filter.getPage() -1, filter.getSize());
+        Pageable pageableRequest = PageRequest.of(filter.getPage() - 1, filter.getSize());
 
         Page<Category> categoryPage = categoryRepository.findAll(pageableRequest);
 

@@ -1,11 +1,15 @@
-package com.ironman.pharmasales.old.application.dto.product;
+package com.ironman.pharmasales.products.application.dto.product;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductSaveDto {
     @NotBlank(message = "El campo nombre es requerido")
     @Size(min = 3)

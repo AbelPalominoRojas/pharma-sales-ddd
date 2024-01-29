@@ -1,6 +1,7 @@
-package com.ironman.pharmasales.old.persistence.repository;
+package com.ironman.pharmasales.products.infrastructure.persistence.repository;
 
-import com.ironman.pharmasales.old.persistence.entity.Product;
+import com.ironman.pharmasales.products.domain.model.product.ProductFilterDomain;
+import com.ironman.pharmasales.products.infrastructure.persistence.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
+
+    List<Product> findByState(String state);
+
     @Query(value = "SELECT p FROM Product AS p" +
             " WHERE ( :#{#product.name} IS NULL OR UPPER(p.name) LIKE UPPER(CONCAT('%',:#{#product.name},'%')) )" +
             " AND ( :#{#product.description} IS NULL OR UPPER(p.description) LIKE UPPER(CONCAT('%',:#{#product.description},'%')) )" +
@@ -17,7 +21,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
             " AND ( :#{#product.subcategoryId} IS NULL OR p.subcategoryId = :#{#product.subcategoryId} )" +
             " AND ( :#{#product.state} IS NULL OR UPPER(p.state) = UPPER(:#{#product.state}) )"
     )
-    Page<Product> paginationFilter(Pageable pageable, @Param("product") Product product);
+    Page<Product> paginationFilter(Pageable pageable, @Param("product") ProductFilterDomain product);
 
     @Query(value = "SELECT p FROM Product AS p" +
             " WHERE CONCAT(UPPER(p.name), ' ', UPPER(p.presentation)) LIKE UPPER(CONCAT('%',:searchText,'%'))" +

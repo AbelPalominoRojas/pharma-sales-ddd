@@ -136,7 +136,7 @@ public class SubcategoryController {
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "description", required = false) String description,
-            @Pattern(regexp = "^\\d*$", message = "El número debe contener solo dígitos")
+            @Pattern(regexp = "^\\d*$", message = "El categoryId debe contener solo dígitos")
             @RequestParam(name = "categoryId", required = false) Long categoryId,
             @Pattern(regexp = "^[AE]$", message = "El estado debe ser 'A' o 'E'")
             @RequestParam(name = "state", required = false) String state,
