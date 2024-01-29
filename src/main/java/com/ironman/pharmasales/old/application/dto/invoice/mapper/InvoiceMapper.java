@@ -6,7 +6,7 @@ import com.ironman.pharmasales.old.application.dto.invoice.InvoiceFilterDto;
 import com.ironman.pharmasales.old.application.dto.invoice.InvoiceSaveDto;
 import com.ironman.pharmasales.old.application.dto.invoicedetail.mapper.InvoiceDetailMapper;
 import com.ironman.pharmasales.old.persistence.entity.Invoice;
-import com.ironman.pharmasales.old.shared.state.mapper.StateMapper;
+import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 
 import java.time.LocalDate;

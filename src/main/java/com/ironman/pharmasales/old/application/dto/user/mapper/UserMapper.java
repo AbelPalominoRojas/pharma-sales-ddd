@@ -4,7 +4,7 @@ import com.ironman.pharmasales.old.application.dto.user.UserCreateDto;
 import com.ironman.pharmasales.old.application.dto.user.UserDto;
 import com.ironman.pharmasales.old.application.dto.user.UserSecurityDto;
 import com.ironman.pharmasales.old.persistence.entity.UserEntity;
-import com.ironman.pharmasales.old.shared.state.mapper.StateMapper;
+import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

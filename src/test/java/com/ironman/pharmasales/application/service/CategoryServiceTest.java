@@ -1,13 +1,12 @@
 package com.ironman.pharmasales.application.service;
 
-import com.ironman.pharmasales.old.application.dto.category.CategoryDto;
-import com.ironman.pharmasales.old.application.dto.category.mapper.CategoryMapper;
-import com.ironman.pharmasales.old.application.service.CategoryService;
-import com.ironman.pharmasales.old.application.service.impl.CategoryServiceImpl;
-import com.ironman.pharmasales.old.persistence.entity.Category;
-import com.ironman.pharmasales.old.persistence.repository.CategoryRepository;
-import com.ironman.pharmasales.old.shared.exception.DataNotFoundException;
-import com.ironman.pharmasales.old.shared.state.enums.State;
+import com.ironman.pharmasales.products.application.dto.category.CategoryDto;
+import com.ironman.pharmasales.products.application.mapper.CategoryMapper;
+import com.ironman.pharmasales.products.application.service.CategoryService;
+import com.ironman.pharmasales.products.infrastructure.persistence.entity.Category;
+import com.ironman.pharmasales.products.infrastructure.persistence.repository.CategoryRepository;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +39,7 @@ class CategoryServiceTest {
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
 
-        categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
+        // categoryService = new CategoryServiceImpl(categoryRepository, categoryMapper);
     }
 
     @AfterEach

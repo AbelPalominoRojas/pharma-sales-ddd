@@ -1,12 +1,12 @@
 package com.ironman.pharmasales.old.application.dto.subcategory.mapper;
 
-import com.ironman.pharmasales.old.application.dto.category.mapper.CategoryMapper;
+import com.ironman.pharmasales.products.application.mapper.CategoryMapper;
 import com.ironman.pharmasales.old.application.dto.subcategory.SubcategoryDto;
 import com.ironman.pharmasales.old.application.dto.subcategory.SubcategoryFilterDto;
 import com.ironman.pharmasales.old.application.dto.subcategory.SubcategoryMediumDto;
 import com.ironman.pharmasales.old.application.dto.subcategory.SubcategorySaveDto;
 import com.ironman.pharmasales.old.persistence.entity.Subcategory;
-import com.ironman.pharmasales.old.shared.state.mapper.StateMapper;
+import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 
 import java.util.List;

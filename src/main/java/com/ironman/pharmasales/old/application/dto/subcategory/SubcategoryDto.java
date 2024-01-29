@@ -1,7 +1,7 @@
 package com.ironman.pharmasales.old.application.dto.subcategory;
 
-import com.ironman.pharmasales.old.application.dto.category.CategorySimpleDto;
-import com.ironman.pharmasales.old.shared.state.enums.State;
+import com.ironman.pharmasales.products.application.dto.category.CategorySimpleDto;
+import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.Data;
 
 import java.time.LocalDateTime;

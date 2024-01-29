@@ -8,8 +8,8 @@ import com.ironman.pharmasales.old.application.dto.documenttype.mapper.DocumentT
 import com.ironman.pharmasales.old.application.service.DocumentTypeService;
 import com.ironman.pharmasales.old.persistence.entity.DocumentType;
 import com.ironman.pharmasales.old.persistence.repository.DocumentTypeRepository;
-import com.ironman.pharmasales.old.shared.exception.DataNotFoundException;
-import com.ironman.pharmasales.old.shared.state.enums.State;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

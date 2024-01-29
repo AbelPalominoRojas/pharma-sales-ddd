@@ -4,7 +4,7 @@ import com.ironman.pharmasales.old.application.dto.user.AuthDto;
 import com.ironman.pharmasales.old.application.dto.user.UserCreateDto;
 import com.ironman.pharmasales.old.application.dto.user.UserDto;
 import com.ironman.pharmasales.old.application.dto.user.UserSecurityDto;
-import com.ironman.pharmasales.old.shared.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 
 public interface UserService {
 

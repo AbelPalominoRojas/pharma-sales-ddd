@@ -4,7 +4,7 @@ import com.ironman.pharmasales.old.application.dto.client.ClientDto;
 import com.ironman.pharmasales.old.application.dto.client.ClientFilterDto;
 import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
 import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
-import com.ironman.pharmasales.old.shared.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

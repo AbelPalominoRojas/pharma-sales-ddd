@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.old.application.dto.user;
 
-import com.ironman.pharmasales.old.shared.security.entity.SecurityEntity;
+import com.ironman.pharmasales.shared.infrastructure.web.security.entity.SecurityEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

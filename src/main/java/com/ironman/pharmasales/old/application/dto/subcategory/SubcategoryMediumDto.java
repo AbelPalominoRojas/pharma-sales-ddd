@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.old.application.dto.subcategory;
 
-import com.ironman.pharmasales.old.application.dto.category.CategorySimpleDto;
+import com.ironman.pharmasales.products.application.dto.category.CategorySimpleDto;
 import lombok.Data;
 
 @Data

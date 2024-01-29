@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.old.application.dto.documenttype;
 
-import com.ironman.pharmasales.old.shared.state.enums.State;
+import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.Data;
 
 import java.time.LocalDateTime;

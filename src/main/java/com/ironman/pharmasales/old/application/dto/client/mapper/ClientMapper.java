@@ -6,7 +6,7 @@ import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
 import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.mapper.DocumentTypeMapper;
 import com.ironman.pharmasales.old.persistence.entity.Client;
-import com.ironman.pharmasales.old.shared.state.mapper.StateMapper;
+import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 
 import java.util.List;

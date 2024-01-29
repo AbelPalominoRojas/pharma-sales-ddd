@@ -1,8 +1,8 @@
 package com.ironman.pharmasales.persistence.repository;
 
-import com.ironman.pharmasales.old.persistence.entity.Category;
-import com.ironman.pharmasales.old.persistence.repository.CategoryRepository;
-import com.ironman.pharmasales.old.shared.state.enums.State;
+import com.ironman.pharmasales.products.infrastructure.persistence.entity.Category;
+import com.ironman.pharmasales.products.infrastructure.persistence.repository.CategoryRepository;
+import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

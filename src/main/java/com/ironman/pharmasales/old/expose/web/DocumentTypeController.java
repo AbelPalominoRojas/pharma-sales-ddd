@@ -5,10 +5,10 @@ import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeFilt
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSaveDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSimpleDto;
 import com.ironman.pharmasales.old.application.service.DocumentTypeService;
-import com.ironman.pharmasales.old.shared.constant.StatusCode;
-import com.ironman.pharmasales.old.shared.exception.DataNotFoundException;
-import com.ironman.pharmasales.old.shared.exception.entity.ArgumentNotValidError;
-import com.ironman.pharmasales.old.shared.exception.entity.GeneralError;
+import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
+import com.ironman.pharmasales.shared.domain.exception.model.GeneralError;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
