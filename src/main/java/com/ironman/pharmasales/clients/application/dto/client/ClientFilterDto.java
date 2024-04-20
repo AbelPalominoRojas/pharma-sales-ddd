@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.client;
+package com.ironman.pharmasales.clients.application.dto.client;
 
 import lombok.Data;
 

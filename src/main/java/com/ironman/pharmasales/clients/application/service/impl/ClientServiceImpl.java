@@ -1,15 +1,15 @@
-package com.ironman.pharmasales.old.application.service.impl;
+package com.ironman.pharmasales.clients.application.service.impl;
 
-import com.ironman.pharmasales.old.application.dto.client.ClientDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
-import com.ironman.pharmasales.old.application.dto.client.mapper.ClientMapper;
-import com.ironman.pharmasales.old.application.service.ClientService;
-import com.ironman.pharmasales.old.persistence.entity.Client;
-import com.ironman.pharmasales.old.persistence.entity.DocumentType;
-import com.ironman.pharmasales.old.persistence.repository.ClientRepository;
-import com.ironman.pharmasales.old.persistence.repository.DocumentTypeRepository;
+import com.ironman.pharmasales.clients.application.service.ClientService;
+import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
+import com.ironman.pharmasales.clients.application.mapper.ClientMapper;
+import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
+import com.ironman.pharmasales.clients.infrastructure.persistence.entity.DocumentType;
+import com.ironman.pharmasales.clients.infrastructure.persistence.repository.ClientRepository;
+import com.ironman.pharmasales.clients.infrastructure.persistence.repository.DocumentTypeRepository;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.RequiredArgsConstructor;

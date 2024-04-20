@@ -1,11 +1,10 @@
-package com.ironman.pharmasales.old.application.dto.client.mapper;
+package com.ironman.pharmasales.clients.application.mapper;
 
-import com.ironman.pharmasales.old.application.dto.client.ClientDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
-import com.ironman.pharmasales.old.application.dto.documenttype.mapper.DocumentTypeMapper;
-import com.ironman.pharmasales.old.persistence.entity.Client;
+import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
+import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 

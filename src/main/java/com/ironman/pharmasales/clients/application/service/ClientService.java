@@ -1,9 +1,9 @@
-package com.ironman.pharmasales.old.application.service;
+package com.ironman.pharmasales.clients.application.service;
 
-import com.ironman.pharmasales.old.application.dto.client.ClientDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
+import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +23,6 @@ public interface ClientService {
     ClientDto disabled(Long id) throws DataNotFoundException;
 
     Page<ClientDto> paginationFilter(Pageable pageable, Optional<ClientFilterDto> filter);
+
     List<ClientMediumDto> search(String searchText);
 }

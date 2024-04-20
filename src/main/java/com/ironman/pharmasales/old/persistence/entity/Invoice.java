@@ -1,5 +1,6 @@
 package com.ironman.pharmasales.old.persistence.entity;
 
+import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
 import jakarta.persistence.*;
 import lombok.Data;
 

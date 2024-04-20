@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.old.application.dto.invoice.mapper;
 
-import com.ironman.pharmasales.old.application.dto.client.mapper.ClientMapper;
+import com.ironman.pharmasales.clients.application.mapper.ClientMapper;
 import com.ironman.pharmasales.old.application.dto.invoice.InvoiceDto;
 import com.ironman.pharmasales.old.application.dto.invoice.InvoiceFilterDto;
 import com.ironman.pharmasales.old.application.dto.invoice.InvoiceSaveDto;

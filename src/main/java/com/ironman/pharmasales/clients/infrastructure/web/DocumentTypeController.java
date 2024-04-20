@@ -1,10 +1,10 @@
-package com.ironman.pharmasales.old.expose.web;
+package com.ironman.pharmasales.clients.infrastructure.web;
 
-import com.ironman.pharmasales.old.application.dto.client.ClientDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.old.application.dto.client.ClientSaveDto;
-import com.ironman.pharmasales.old.application.service.ClientService;
+import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeDto;
+import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeFilterDto;
+import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSaveDto;
+import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.ironman.pharmasales.clients.application.service.DocumentTypeService;
 import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
@@ -23,20 +23,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("client")
-public class ClientController {
+@RequestMapping("document-type")
+public class DocumentTypeController {
+    private final DocumentTypeService documentTypeService;
 
-    private final ClientService clientService;
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
-    public ResponseEntity<List<ClientDto>> findAll() {
-        List<ClientDto> clients = clientService.findAll();
+    public ResponseEntity<List<DocumentTypeDto>> findAll() {
+        List<DocumentTypeDto> documentTypes = documentTypeService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(clients);
+                .body(documentTypes);
     }
 
     @ApiResponse(responseCode = StatusCode.OK)
@@ -48,22 +49,14 @@ public class ClientController {
             )
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> findById(@PathVariable("id") Long id)
-            throws DataNotFoundException {
-        ClientDto client = clientService.findById(id);
+    public ResponseEntity<DocumentTypeDto> findById(@PathVariable("id") Long id) throws DataNotFoundException {
+        DocumentTypeDto documentType = documentTypeService.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(client);
+                .body(documentType);
     }
 
     @ApiResponse(responseCode = StatusCode.CREATED)
-    @ApiResponse(
-            responseCode = StatusCode.NOT_FOUND,
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = GeneralError.class)
-            )
-    )
     @ApiResponse(
             responseCode = StatusCode.BAD_REQUEST,
             content = @Content(
@@ -72,22 +65,14 @@ public class ClientController {
             )
     )
     @PostMapping
-    public ResponseEntity<ClientDto> create(@Valid @RequestBody ClientSaveDto clientBody)
-            throws DataNotFoundException {
-        ClientDto client = clientService.create(clientBody);
+    public ResponseEntity<DocumentTypeDto> create(@Valid @RequestBody DocumentTypeSaveDto documentTypeSaveDto) {
+        DocumentTypeDto documentType = documentTypeService.create(documentTypeSaveDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(client);
+                .body(documentType);
     }
 
     @ApiResponse(responseCode = StatusCode.OK)
-    @ApiResponse(
-            responseCode = StatusCode.NOT_FOUND,
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = GeneralError.class)
-            )
-    )
     @ApiResponse(
             responseCode = StatusCode.BAD_REQUEST,
             content = @Content(
@@ -95,13 +80,20 @@ public class ClientController {
                     schema = @Schema(implementation = ArgumentNotValidError.class)
             )
     )
+    @ApiResponse(
+            responseCode = StatusCode.NOT_FOUND,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GeneralError.class)
+            )
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDto> edit(@PathVariable("id") Long id, @Valid @RequestBody ClientSaveDto clientBody)
+    public ResponseEntity<DocumentTypeDto> edit(@PathVariable("id") Long id, @Valid @RequestBody DocumentTypeSaveDto documentTypeSaveDto)
             throws DataNotFoundException {
-        ClientDto client = clientService.edit(id, clientBody);
+        DocumentTypeDto documentType = documentTypeService.edit(id, documentTypeSaveDto);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(client);
+                .body(documentType);
     }
 
     @ApiResponse(responseCode = StatusCode.OK)
@@ -113,28 +105,28 @@ public class ClientController {
             )
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClientDto> disabled(@PathVariable("id") Long id) throws DataNotFoundException {
-        ClientDto client = clientService.disabled(id);
+    public ResponseEntity<DocumentTypeDto> disabled(@PathVariable("id") Long id) throws DataNotFoundException {
+        DocumentTypeDto documentType = documentTypeService.disabled(id);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(client);
+                .body(documentType);
+    }
+
+    @ApiResponse(responseCode = StatusCode.OK)
+    @GetMapping("/select")
+    public ResponseEntity<List<DocumentTypeSimpleDto>> select() {
+        List<DocumentTypeSimpleDto> documentTypes = documentTypeService.select();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(documentTypes);
     }
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping("/pagination-filter")
-    public ResponseEntity<Page<ClientDto>> paginationFilter(Pageable pageable, Optional<ClientFilterDto> filter) {
-        Page<ClientDto> clientDtoPage = clientService.paginationFilter(pageable, filter);
+    public ResponseEntity<Page<DocumentTypeDto>>paginationFilter(Pageable pageable, Optional<DocumentTypeFilterDto> filter) {
+        Page<DocumentTypeDto> documentTypeDtoPage = documentTypeService.paginationFilter(pageable, filter);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(clientDtoPage);
-    }
-
-    @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/search/{searchText}")
-    public ResponseEntity<List<ClientMediumDto>> search(@PathVariable("searchText") String searchText){
-        List<ClientMediumDto> clients = clientService.search(searchText);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(clients);
+                .body(documentTypeDtoPage);
     }
 }

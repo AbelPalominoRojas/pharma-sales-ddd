@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.service;
+package com.ironman.pharmasales.clients.application.service;
 
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeFilterDto;

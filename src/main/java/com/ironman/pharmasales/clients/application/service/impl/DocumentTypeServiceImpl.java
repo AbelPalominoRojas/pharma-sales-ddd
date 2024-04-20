@@ -1,13 +1,13 @@
-package com.ironman.pharmasales.old.application.service.impl;
+package com.ironman.pharmasales.clients.application.service.impl;
 
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeFilterDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSaveDto;
 import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSimpleDto;
-import com.ironman.pharmasales.old.application.dto.documenttype.mapper.DocumentTypeMapper;
-import com.ironman.pharmasales.old.application.service.DocumentTypeService;
-import com.ironman.pharmasales.old.persistence.entity.DocumentType;
-import com.ironman.pharmasales.old.persistence.repository.DocumentTypeRepository;
+import com.ironman.pharmasales.clients.application.mapper.DocumentTypeMapper;
+import com.ironman.pharmasales.clients.application.service.DocumentTypeService;
+import com.ironman.pharmasales.clients.infrastructure.persistence.entity.DocumentType;
+import com.ironman.pharmasales.clients.infrastructure.persistence.repository.DocumentTypeRepository;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.RequiredArgsConstructor;
