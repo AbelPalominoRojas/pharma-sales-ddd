@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.clients.application.dto.client;
 
-import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSimpleDto;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.documenttype;
+package com.ironman.pharmasales.clients.application.dto.documenttype;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

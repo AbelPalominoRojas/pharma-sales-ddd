@@ -1,9 +1,9 @@
 package com.ironman.pharmasales.clients.infrastructure.web;
 
-import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeDto;
-import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeFilterDto;
-import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSaveDto;
-import com.ironman.pharmasales.old.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeFilterDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSaveDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSimpleDto;
 import com.ironman.pharmasales.clients.application.service.DocumentTypeService;
 import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
