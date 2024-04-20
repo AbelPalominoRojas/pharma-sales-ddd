@@ -7,6 +7,7 @@ import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidErr
 import com.ironman.pharmasales.shared.domain.exception.model.GeneralError;
 import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -125,25 +126,39 @@ public class ProductController {
             @NotNull(message = "El campo page es requerido")
             @Min(value = 1, message = "El número de página debe ser positivo")
             @RequestParam(name = "page", defaultValue = "1") int page,
+
             @NotNull(message = "El campo size es requerido")
             @Min(value = 1, message = "El tamaño de la página debe ser positivo")
             @RequestParam(name = "size", defaultValue = "10") int size,
+
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "presentation", required = false) String presentation,
+
             @Pattern(regexp = "^\\d*$", message = "El stock debe contener solo dígitos")
             @RequestParam(name = "stock", required = false) Long stock,
+
             @Pattern(regexp = "^\\d*$", message = "El subcategoryId debe contener solo dígitos")
             @RequestParam(name = "subcategoryId", required = false) Long subcategoryId,
+
+            @Parameter(description = "El estado debe ser 'A' o 'E'")
             @Pattern(regexp = "^[AE]$", message = "El estado debe ser 'A' o 'E'")
             @RequestParam(name = "state", required = false) String state,
+
+            @Parameter(description = "El campo createdAtFrom debe estar en el formato yyyy-MM-dd")
             @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "La fecha debe estar en el formato yyyy-MM-dd")
             @RequestParam(name = "createdAtFrom", required = false) LocalDate createdAtFrom,
+
+            @Parameter(description = "El campo createdAtTo debe estar en el formato yyyy-MM-dd")
             @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "La fecha debe estar en el formato yyyy-MM-dd")
             @RequestParam(name = "createdAtTo", required = false) LocalDate createdAtTo,
-            @Pattern(regexp = "^(name|createdAt)$", message = "La dirección debe ser 'name' o 'createdAt'")
+
+            @Parameter(description = "El campo sort debe ser 'id', 'name', stock, 'subcategoryId' o 'createdAt'")
+            @Pattern(regexp = "^(id|name|stock|subcategoryId|createdAt)$", message = "El campo sort debe ser 'id', 'name', stock, 'subcategoryId' o 'createdAt'")
             @RequestParam(name = "sort", required = false) String sort,
-            @Pattern(regexp = "^(ASC|DESC)$", message = "La dirección debe ser 'ASC' o 'DESC'")
+
+            @Parameter(description = "El campo direction debe ser 'ASC' o 'DESC'")
+            @Pattern(regexp = "^(ASC|DESC)$", message = "El campo direction debe ser 'ASC' o 'DESC'")
             @RequestParam(name = "direction", required = false) String direction
     ) {
         ProductFilterDto filter = ProductFilterDto.builder()

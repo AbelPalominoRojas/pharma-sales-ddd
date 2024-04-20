@@ -21,6 +21,6 @@ public class ProductFilterDomain extends PageableRequest {
     private Long stock;
     private Long subcategoryId;
     private String state;
-    private LocalDate createdAtFrom;
-    private LocalDate createdAtTo;
+    private String createdAtFrom;
+    private String createdAtTo;
 }

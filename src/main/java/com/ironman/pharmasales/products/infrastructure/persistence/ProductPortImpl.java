@@ -4,6 +4,7 @@ import com.ironman.pharmasales.products.domain.model.product.ProductDomain;
 import com.ironman.pharmasales.products.domain.model.product.ProductFilterDomain;
 import com.ironman.pharmasales.products.domain.port.ProductPort;
 import com.ironman.pharmasales.products.infrastructure.persistence.entity.Product;
+import com.ironman.pharmasales.products.infrastructure.persistence.enums.ProductSortField;
 import com.ironman.pharmasales.products.infrastructure.persistence.mapper.ProductEntityMapper;
 import com.ironman.pharmasales.products.infrastructure.persistence.repository.ProductRepository;
 import com.ironman.pharmasales.shared.domain.page.PageResponse;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -57,9 +59,21 @@ public class ProductPortImpl extends PageProcessor<ProductDomain> implements Pro
 
     @Override
     public PageResponse<ProductDomain> findAll(ProductFilterDomain filter) {
-        Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize());
+        Sort sort = getSort(filter.getSort(), filter.getDirection());
+        Pageable pageable = PageRequest.of(filter.getPage() - 1, filter.getSize(), sort);
 
-        Page<Product> productPage = productRepository.paginationFilter(pageable, filter);
+        Page<Product> productPage = productRepository.findAllPaginated(
+                filter.getName(),
+                filter.getDescription(),
+                filter.getPresentation(),
+                filter.getStock(),
+                filter.getSubcategoryId(),
+                filter.getState(),
+                filter.getCreatedAtFrom(),
+                filter.getCreatedAtTo(),
+                pageable
+        );
+
 
         var products = productPage.getContent()
                 .stream()
@@ -75,5 +89,15 @@ public class ProductPortImpl extends PageProcessor<ProductDomain> implements Pro
                 .stream()
                 .map(productMapper::toDomain)
                 .toList();
+    }
+
+    private Sort getSort(String sortField, String sortDirection) {
+        String sortColumn = ProductSortField.getSqlName(sortField);
+
+        Sort.Direction direction = Sort.Direction
+                .fromOptionalString(sortDirection)
+                .orElse(Sort.Direction.ASC);
+
+        return Sort.by(direction, sortColumn);
     }
 }
