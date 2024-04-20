@@ -4,6 +4,7 @@ import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryDoma
 import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryFilterDomain;
 import com.ironman.pharmasales.products.domain.port.SubcategoryPort;
 import com.ironman.pharmasales.products.infrastructure.persistence.entity.Subcategory;
+import com.ironman.pharmasales.products.infrastructure.persistence.enums.SubcategorySortField;
 import com.ironman.pharmasales.products.infrastructure.persistence.mapper.SubcategoryEntityMapper;
 import com.ironman.pharmasales.products.infrastructure.persistence.repository.SubcategoryRepository;
 import com.ironman.pharmasales.shared.domain.page.PageResponse;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,9 +63,26 @@ public class SubcategoryPortImpl extends PageProcessor<SubcategoryDomain> implem
 
     @Override
     public PageResponse<SubcategoryDomain> findAll(SubcategoryFilterDomain filter) {
-        Pageable pageableRequest = PageRequest.of(filter.getPage(), filter.getSize());
 
-        Page<Subcategory> subcategoryPage = subcategoryRepository.paginationFilter(pageableRequest, filter);
+        String sortField = SubcategorySortField.getSqlName(filter.getSort());
+
+        Sort.Direction direction = Sort.Direction
+                .fromOptionalString(filter.getDirection())
+                .orElse(Sort.Direction.ASC);
+
+        Sort sort = Sort.by(direction, sortField);
+
+        Pageable pageableRequest = PageRequest.of(filter.getPage() - 1, filter.getSize(), sort);
+
+        Page<Subcategory> subcategoryPage = subcategoryRepository.findAllPaginated(
+                filter.getName(),
+                filter.getDescription(),
+                filter.getCategoryId(),
+                filter.getState(),
+                filter.getCreatedAtFrom(),
+                filter.getCreatedAtTo(),
+                pageableRequest
+        );
 
         var subcategories = subcategoryPage.getContent()
                 .stream()

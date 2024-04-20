@@ -19,6 +19,6 @@ public class SubcategoryFilterDomain extends PageableRequest {
     private String description;
     private Long categoryId;
     private String state;
-    private LocalDate createdAtFrom;
-    private LocalDate createdAtTo;
+    private String createdAtFrom;
+    private String createdAtTo;
 }

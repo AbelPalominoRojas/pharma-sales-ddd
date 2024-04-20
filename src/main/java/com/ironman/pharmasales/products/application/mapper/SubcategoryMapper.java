@@ -3,11 +3,8 @@ package com.ironman.pharmasales.products.application.mapper;
 import com.ironman.pharmasales.products.application.dto.subcategory.*;
 import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryDomain;
 import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryFilterDomain;
-import com.ironman.pharmasales.products.infrastructure.persistence.entity.Subcategory;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
-
-import java.util.List;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
@@ -26,6 +23,13 @@ public interface SubcategoryMapper {
 
     void updateDomain(@MappingTarget SubcategoryDomain subcategory, SubcategorySaveDto subcategoryDto);
 
+    @Mapping(target = "createdAtFrom", qualifiedByName = "localDateToString")
+    @Mapping(target = "createdAtTo", qualifiedByName = "localDateToString")
     SubcategoryFilterDomain toFilter(SubcategoryFilterDto filter);
+
+    @Named("localDateToString")
+    default String localDateToString(java.time.LocalDate localDate) {
+        return localDate != null ? localDate.toString() : null;
+    }
 
 }
