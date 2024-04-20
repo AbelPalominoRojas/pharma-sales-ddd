@@ -4,12 +4,15 @@ import com.ironman.pharmasales.products.application.dto.subcategory.*;
 import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryDomain;
 import com.ironman.pharmasales.products.domain.model.subcategory.SubcategoryFilterDomain;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {CategoryMapper.class, StateMapper.class}
-
+        uses = {CategoryMapper.class, StateMapper.class},
+        imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface SubcategoryMapper {
 
@@ -17,19 +20,14 @@ public interface SubcategoryMapper {
 
     @Mapping(target = "categoryId", source = "subcategory.id")
     SubcategorySmallDto toSmallDto(SubcategoryDomain subcategory);
+
     SubcategoryMediumDto toMediumDto(SubcategoryDomain subcategory);
 
     SubcategoryDomain toDomain(SubcategorySaveDto subcategoryDto);
 
     void updateDomain(@MappingTarget SubcategoryDomain subcategory, SubcategorySaveDto subcategoryDto);
 
-    @Mapping(target = "createdAtFrom", qualifiedByName = "localDateToString")
-    @Mapping(target = "createdAtTo", qualifiedByName = "localDateToString")
+    @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
+    @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")
     SubcategoryFilterDomain toFilter(SubcategoryFilterDto filter);
-
-    @Named("localDateToString")
-    default String localDateToString(java.time.LocalDate localDate) {
-        return localDate != null ? localDate.toString() : null;
-    }
-
 }

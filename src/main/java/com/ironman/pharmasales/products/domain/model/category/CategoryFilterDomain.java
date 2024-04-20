@@ -18,6 +18,6 @@ public class CategoryFilterDomain extends PageableRequest {
     private String name;
     private String description;
     private String state;
-    private LocalDate createdAtFrom;
-    private LocalDate createdAtTo;
+    private String createdAtFrom;
+    private String createdAtTo;
 }

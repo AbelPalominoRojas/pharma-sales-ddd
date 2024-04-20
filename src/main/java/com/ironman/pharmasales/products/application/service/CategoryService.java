@@ -17,5 +17,5 @@ public interface CategoryService {
 
     CategoryDto disabled(Long id) throws DataNotFoundException;
 
-    PageResponse<CategoryDto> findAll(CategoryFilterDto pageable);
+    PageResponse<CategoryDto> findAll(CategoryFilterDto filter);
 }

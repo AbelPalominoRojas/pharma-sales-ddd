@@ -1,5 +1,6 @@
 package com.ironman.pharmasales.products.application.service.impl;
 
+import com.ironman.pharmasales.products.domain.model.category.CategoryFilterDomain;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import com.ironman.pharmasales.shared.application.string.StringHelper;
 import com.ironman.pharmasales.products.application.dto.category.CategoryDto;
@@ -77,8 +78,10 @@ public class CategoryServiceImpl extends PageBuild<CategoryDto> implements Categ
     }
 
     @Override
-    public PageResponse<CategoryDto> findAll(CategoryFilterDto pageable) {
-        var categoryPage = categoryPort.findAll(categoryMapper.toFilter(pageable));
+    public PageResponse<CategoryDto> findAll(CategoryFilterDto filter) {
+        CategoryFilterDomain filterDomain = categoryMapper.toFilter(filter);
+
+        var categoryPage = categoryPort.findAll(filterDomain);
 
         var categories = categoryPage.getContent()
                 .stream()

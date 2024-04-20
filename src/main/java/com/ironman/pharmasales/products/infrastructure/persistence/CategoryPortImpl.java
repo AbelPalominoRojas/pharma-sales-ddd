@@ -4,6 +4,7 @@ import com.ironman.pharmasales.products.domain.model.category.CategoryDomain;
 import com.ironman.pharmasales.products.domain.model.category.CategoryFilterDomain;
 import com.ironman.pharmasales.products.domain.port.CategoryPort;
 import com.ironman.pharmasales.products.infrastructure.persistence.entity.Category;
+import com.ironman.pharmasales.products.infrastructure.persistence.enums.CategorySortField;
 import com.ironman.pharmasales.products.infrastructure.persistence.mapper.CategoryEntityMapper;
 import com.ironman.pharmasales.products.infrastructure.persistence.repository.CategoryRepository;
 import com.ironman.pharmasales.shared.infrastructure.persistence.page.PageProcessor;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -57,9 +59,17 @@ public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements C
 
     @Override
     public PageResponse<CategoryDomain> findAll(CategoryFilterDomain filter) {
-        Pageable pageableRequest = PageRequest.of(filter.getPage() - 1, filter.getSize());
+        Sort sort = getSort(filter.getSort(), filter.getDirection());
+        Pageable pageableRequest = PageRequest.of(filter.getPage() - 1, filter.getSize() , sort);
 
-        Page<Category> categoryPage = categoryRepository.findAll(pageableRequest);
+        Page<Category> categoryPage = categoryRepository.findAllPaginated(
+                filter.getName(),
+                filter.getDescription(),
+                filter.getState(),
+                filter.getCreatedAtFrom(),
+                filter.getCreatedAtTo(),
+                pageableRequest
+        );
 
         var categories = categoryPage.getContent()
                 .stream()
@@ -67,6 +77,16 @@ public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements C
                 .toList();
 
         return getPageBuild(categoryPage, categories);
+    }
+
+    private Sort getSort(String sortField, String sortDirection) {
+        String sortColumn = CategorySortField.getSqlName(sortField);
+
+        Sort.Direction direction = Sort.Direction
+                .fromOptionalString(sortDirection)
+                .orElse(Sort.Direction.ASC);
+
+        return Sort.by(direction, sortColumn);
     }
 
 
