@@ -1,9 +1,9 @@
-package com.ironman.pharmasales.old.expose.web;
+package com.ironman.pharmasales.users.infrastructure.web;
 
 
-import com.ironman.pharmasales.old.application.dto.user.AuthDto;
-import com.ironman.pharmasales.old.application.dto.user.UserSecurityDto;
-import com.ironman.pharmasales.old.application.service.UserService;
+import com.ironman.pharmasales.users.application.dto.user.AuthDto;
+import com.ironman.pharmasales.users.application.dto.user.UserSecurityDto;
+import com.ironman.pharmasales.users.application.service.UserService;
 import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,14 +33,14 @@ public class LoginController {
     @ApiResponse(
             responseCode = StatusCode.NOT_FOUND,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = GeneralError.class)
             )
     )
     @ApiResponse(
             responseCode = StatusCode.BAD_REQUEST,
             content = @Content(
-                    mediaType = "application/json",
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ArgumentNotValidError.class)
             )
     )

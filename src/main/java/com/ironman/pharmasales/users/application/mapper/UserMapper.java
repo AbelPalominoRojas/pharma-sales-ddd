@@ -1,9 +1,9 @@
-package com.ironman.pharmasales.old.application.dto.user.mapper;
+package com.ironman.pharmasales.users.application.mapper;
 
-import com.ironman.pharmasales.old.application.dto.user.UserCreateDto;
-import com.ironman.pharmasales.old.application.dto.user.UserDto;
-import com.ironman.pharmasales.old.application.dto.user.UserSecurityDto;
-import com.ironman.pharmasales.old.persistence.entity.UserEntity;
+import com.ironman.pharmasales.users.application.dto.user.UserCreateDto;
+import com.ironman.pharmasales.users.application.dto.user.UserDto;
+import com.ironman.pharmasales.users.application.dto.user.UserSecurityDto;
+import com.ironman.pharmasales.users.infrastructure.persistence.entity.UserEntity;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;

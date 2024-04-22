@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.shared.infrastructure.web.config;
 
-import com.ironman.pharmasales.old.persistence.repository.UserRepository;
+import com.ironman.pharmasales.users.infrastructure.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

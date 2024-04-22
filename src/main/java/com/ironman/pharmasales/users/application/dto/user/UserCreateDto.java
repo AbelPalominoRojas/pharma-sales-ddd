@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.user;
+package com.ironman.pharmasales.users.application.dto.user;
 
 
 import jakarta.validation.constraints.*;

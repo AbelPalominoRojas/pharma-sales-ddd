@@ -1,4 +1,5 @@
-package com.ironman.pharmasales.old.application.dto.user;
+package com.ironman.pharmasales.users.application.dto.user;
+
 
 import com.ironman.pharmasales.shared.infrastructure.web.security.entity.SecurityEntity;
 import lombok.Data;

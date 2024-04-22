@@ -1,13 +1,13 @@
-package com.ironman.pharmasales.old.application.service.impl;
+package com.ironman.pharmasales.users.application.service.impl;
 
-import com.ironman.pharmasales.old.application.dto.user.AuthDto;
-import com.ironman.pharmasales.old.application.dto.user.UserCreateDto;
-import com.ironman.pharmasales.old.application.dto.user.UserDto;
-import com.ironman.pharmasales.old.application.dto.user.UserSecurityDto;
-import com.ironman.pharmasales.old.application.dto.user.mapper.UserMapper;
-import com.ironman.pharmasales.old.application.service.UserService;
-import com.ironman.pharmasales.old.persistence.entity.UserEntity;
-import com.ironman.pharmasales.old.persistence.repository.UserRepository;
+import com.ironman.pharmasales.users.application.dto.user.AuthDto;
+import com.ironman.pharmasales.users.application.dto.user.UserCreateDto;
+import com.ironman.pharmasales.users.application.dto.user.UserDto;
+import com.ironman.pharmasales.users.application.dto.user.UserSecurityDto;
+import com.ironman.pharmasales.users.application.mapper.UserMapper;
+import com.ironman.pharmasales.users.application.service.UserService;
+import com.ironman.pharmasales.users.infrastructure.persistence.entity.UserEntity;
+import com.ironman.pharmasales.users.infrastructure.persistence.repository.UserRepository;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.infrastructure.web.security.JwtHelper;
 import com.ironman.pharmasales.shared.application.state.enums.State;
@@ -47,12 +47,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSecurityDto login(AuthDto authDto) throws DataNotFoundException {
         UserEntity user = userRepository.findByEmail(authDto.getEmail())
-                .orElseThrow(()-> new DataNotFoundException("Usuario " + authDto.getEmail() + " no se encuenta en el registro"));
+                .orElseThrow(() -> new DataNotFoundException("Usuario " + authDto.getEmail() + " no se encuenta en el registro"));
 
-        if(!passwordEncoder.matches(authDto.getPassword(), user.getPassword()))
+        if (!passwordEncoder.matches(authDto.getPassword(), user.getPassword()))
             throw new DataNotFoundException("Usuario/Password no son correctos");
 
-        if(user.getState().equalsIgnoreCase(State.DISABLE.getValue()))
+        if (user.getState().equalsIgnoreCase(State.DISABLE.getValue()))
             throw new DataNotFoundException("Usuario esta deshabilitado. Comuniquese con el administrador del sistema");
 
         UserSecurityDto userSecurity = userMapper.toUserSecurityDto(user);

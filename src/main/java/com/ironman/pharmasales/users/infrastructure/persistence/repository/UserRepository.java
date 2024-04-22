@@ -1,6 +1,6 @@
-package com.ironman.pharmasales.old.persistence.repository;
+package com.ironman.pharmasales.users.infrastructure.persistence.repository;
 
-import com.ironman.pharmasales.old.persistence.entity.UserEntity;
+import com.ironman.pharmasales.users.infrastructure.persistence.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
