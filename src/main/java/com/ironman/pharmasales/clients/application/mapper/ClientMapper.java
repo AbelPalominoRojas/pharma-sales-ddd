@@ -1,82 +1,39 @@
 package com.ironman.pharmasales.clients.application.mapper;
 
-import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
-import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
+import com.ironman.pharmasales.clients.application.dto.client.*;
+import com.ironman.pharmasales.clients.domain.model.client.ClientDomain;
+import com.ironman.pharmasales.clients.domain.model.client.ClientFilterDomain;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 
-import java.util.List;
-
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {StateMapper.class, DocumentTypeMapper.class}
+        uses = {StateMapper.class, DocumentTypeMapper.class},
+        imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface ClientMapper {
 
-    // Dto from Entity Start
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "documentType", source = "documentType")
-    @Mapping(target = "documentNumber", source = "documentNumber")
-    @Mapping(target = "phoneNumber", source = "phoneNumber")
-    @Mapping(target = "address", source = "address")
-    @Mapping(target = "state", source = "state")
-    @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
-    ClientDto toClientDto(Client client);
+    ClientDto toDto(ClientDomain client);
 
-    List<ClientDto> toClientDtos(List<Client> clients);
-
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
-    @Mapping(target = "documentType", source = "documentType")
-    @Mapping(target = "documentNumber", source = "documentNumber")
-    @Mapping(target = "phoneNumber", source = "phoneNumber")
-    @Mapping(target = "address", source = "address")
-    ClientMediumDto toClientMediumDto(Client client);
+    ClientMediumDto toMediumDto(ClientDomain client);
+
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
+    ClientSmallDto toSmallDto(ClientDomain client);
+
+    ClientDomain toDomain(ClientSaveDto clientDto);
+
+    void updateDomain(@MappingTarget ClientDomain clientDomain, ClientSaveDto clientDto);
+
+    @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
+    @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")
+    ClientFilterDomain toFilter(ClientFilterDto filter);
+
 
     @Named("getFullName")
-    default String getFullName(Client client) {
+    default String getFullName(ClientDomain client) {
         String fullName = client.getName() + " " + client.getLastName();
 
         return fullName.strip();
     }
-
-    List<ClientMediumDto> toClientMediumDtos(List<Client> clients);
-    // Dto from Entity End
-
-    // Entity from Dto Start
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "documentTypeId", source = "documentTypeId")
-    @Mapping(target = "documentNumber", source = "documentNumber")
-    @Mapping(target = "phoneNumber", source = "phoneNumber")
-    @Mapping(target = "address", source = "address")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "documentType", ignore = true)
-    @Mapping(target = "state", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    Client toClient(ClientSaveDto clientSaveDto);
-
-    @InheritConfiguration
-    void updateClient(@MappingTarget Client client, ClientSaveDto clientSaveDto);
-
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "documentTypeId", source = "documentTypeId")
-    @Mapping(target = "documentNumber", source = "documentNumber")
-    @Mapping(target = "state", source = "state")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "documentType", ignore = true)
-    @Mapping(target = "phoneNumber", ignore = true)
-    @Mapping(target = "address", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    Client toClient(ClientFilterDto clientFilterDto);
-    // Entity from Dto End
 }

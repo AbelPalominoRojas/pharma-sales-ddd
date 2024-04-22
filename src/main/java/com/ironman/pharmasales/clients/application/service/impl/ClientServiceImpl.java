@@ -1,117 +1,117 @@
 package com.ironman.pharmasales.clients.application.service.impl;
 
-import com.ironman.pharmasales.clients.application.service.ClientService;
-import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
+import com.ironman.pharmasales.clients.application.dto.client.*;
 import com.ironman.pharmasales.clients.application.mapper.ClientMapper;
-import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
-import com.ironman.pharmasales.clients.infrastructure.persistence.entity.DocumentType;
-import com.ironman.pharmasales.clients.infrastructure.persistence.repository.ClientRepository;
-import com.ironman.pharmasales.clients.infrastructure.persistence.repository.DocumentTypeRepository;
-import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.clients.application.service.ClientService;
+import com.ironman.pharmasales.clients.domain.model.client.ClientDomain;
+import com.ironman.pharmasales.clients.domain.model.client.ClientFilterDomain;
+import com.ironman.pharmasales.clients.domain.model.documenttype.DocumentTypeDomain;
+import com.ironman.pharmasales.clients.domain.port.ClientPort;
+import com.ironman.pharmasales.clients.domain.port.DocumentTypePort;
+import com.ironman.pharmasales.shared.application.page.PageBuild;
 import com.ironman.pharmasales.shared.application.state.enums.State;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @Service
-public class ClientServiceImpl implements ClientService {
-    private final ClientRepository clientRepository;
+public class ClientServiceImpl extends PageBuild<ClientDto> implements ClientService {
+
+    private final ClientPort clientPort;
+    private final DocumentTypePort documentTypePort;
     private final ClientMapper clientMapper;
-    private final DocumentTypeRepository documentTypeRepository;
 
     @Override
     public List<ClientDto> findAll() {
-        List<Client> clients = (List<Client>) clientRepository.findAll();
-
-        return clientMapper.toClientDtos(clients);
+        return clientPort.findAll()
+                .stream()
+                .map(clientMapper::toDto)
+                .toList();
     }
 
     @Override
     public ClientDto findById(Long id) throws DataNotFoundException {
-        Client client = clientRepository.findById(id)
+        ClientDomain client = clientPort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cliente no se encontro para el id: " + id));
 
-        return clientMapper.toClientDto(client);
+        return clientMapper.toDto(client);
     }
 
     @Override
     public ClientDto create(ClientSaveDto clientBody) throws DataNotFoundException {
-        DocumentType documentType = documentTypeRepository.findById(clientBody.getDocumentTypeId())
+        DocumentTypeDomain documentType = documentTypePort.findById(clientBody.getDocumentTypeId())
                 .orElseThrow(() -> new DataNotFoundException(
                         "Tipo de documento no encontrado para el id: " + clientBody.getDocumentTypeId())
                 );
 
-        Client clientSave = clientMapper.toClient(clientBody);
+        ClientDomain clientSave = clientMapper.toDomain(clientBody);
         clientSave.setDocumentType(documentType);
         clientSave.setState(State.ACTIVE.getValue());
         clientSave.setCreatedAt(LocalDateTime.now());
 
-        Client client = clientRepository.save(clientSave);
-
-        return clientMapper.toClientDto(client);
+        return clientMapper.toDto(clientPort.save(clientSave));
     }
 
     @Override
     public ClientDto edit(Long id, ClientSaveDto clientBody) throws DataNotFoundException {
-        DocumentType documentType = documentTypeRepository.findById(clientBody.getDocumentTypeId())
+        DocumentTypeDomain documentType = documentTypePort.findById(clientBody.getDocumentTypeId())
                 .orElseThrow(() -> new DataNotFoundException(
                         "Tipo de documento no encontrado para el id: " + clientBody.getDocumentTypeId())
                 );
 
-        Client clientDb = clientRepository.findById(id)
+        ClientDomain clientDb = clientPort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cliente no se encontro para el id: " + id));
 
-        clientMapper.updateClient(clientDb, clientBody);
+        clientMapper.updateDomain(clientDb, clientBody);
         clientDb.setDocumentType(documentType);
         clientDb.setUpdatedAt(LocalDateTime.now());
 
-        Client client = clientRepository.save(clientDb);
-
-        return clientMapper.toClientDto(client);
+        return clientMapper.toDto(clientPort.save(clientDb));
     }
 
     @Override
     public ClientDto disabled(Long id) throws DataNotFoundException {
-        Client clientDb = clientRepository.findById(id)
+        ClientDomain clientDb = clientPort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cliente no se encontro para el id: " + id));
 
         clientDb.setState(State.DISABLE.getValue());
 
-        Client client = clientRepository.save(clientDb);
-
-        return clientMapper.toClientDto(client);
+        return clientMapper.toDto(clientPort.save(clientDb));
     }
 
     @Override
-    public Page<ClientDto> paginationFilter(Pageable pageable, Optional<ClientFilterDto> filter) {
-        ClientFilterDto filterDto = filter.orElse(new ClientFilterDto());
+    public List<ClientSmallDto> select() {
+        return clientPort.findByState(State.ACTIVE.getValue())
+                .stream()
+                .map(clientMapper::toSmallDto)
+                .toList();
+    }
 
-        Client client = clientMapper.toClient(filterDto);
+    @Override
+    public PageResponse<ClientDto> findAll(ClientFilterDto filter) {
+        ClientFilterDomain filterDomain = clientMapper.toFilter(filter);
 
-        Page<Client> clientPage = clientRepository.paginationFilter(pageable, client);
+        var clientPage = clientPort.findAll(filterDomain);
 
-        return new PageImpl<>(
-                clientMapper.toClientDtos(clientPage.getContent()),
-                clientPage.getPageable(),
-                clientPage.getTotalElements()
-        );
+        var clients = clientPage.getContent()
+                .stream()
+                .map(clientMapper::toDto)
+                .toList();
+
+        return getPage(clientPage, clients);
     }
 
     @Override
     public List<ClientMediumDto> search(String searchText) {
-        List<Client> clients = clientRepository.search(searchText);
-
-        return clientMapper.toClientMediumDtos(clients);
+        return clientPort.search(searchText)
+                .stream()
+                .map(clientMapper::toMediumDto)
+                .toList();
     }
 }
