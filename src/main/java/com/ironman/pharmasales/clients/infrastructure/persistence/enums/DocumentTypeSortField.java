@@ -1,6 +1,5 @@
 package com.ironman.pharmasales.clients.infrastructure.persistence.enums;
 
-import com.ironman.pharmasales.products.infrastructure.persistence.enums.SubcategorySortField;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,7 @@ public enum DocumentTypeSortField {
 
     public static String getSqlName(String name) {
         try {
-            return SubcategorySortField.valueOf(name).getColumn();
+            return DocumentTypeSortField.valueOf(name).getColumn();
         } catch (Exception e) {
             return ofNullable(name).orElseGet(ID::getColumn);
         }

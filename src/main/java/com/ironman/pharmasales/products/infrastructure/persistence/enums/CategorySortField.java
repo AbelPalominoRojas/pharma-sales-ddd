@@ -17,7 +17,7 @@ public enum CategorySortField {
 
     public static String getSqlName(String name) {
         try {
-            return SubcategorySortField.valueOf(name).getColumn();
+            return CategorySortField.valueOf(name).getColumn();
         } catch (Exception e) {
             return ofNullable(name).orElseGet(ID::getColumn);
         }
