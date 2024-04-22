@@ -3,13 +3,11 @@ package com.ironman.pharmasales.clients.application.service;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeDto;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeFilterDto;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSaveDto;
-import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSmallDto;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DocumentTypeService {
     List<DocumentTypeDto> findAll();
@@ -22,7 +20,7 @@ public interface DocumentTypeService {
 
     DocumentTypeDto disabled(Long id) throws DataNotFoundException;
 
-    List<DocumentTypeSimpleDto> select();
+    List<DocumentTypeSmallDto> select();
 
-    Page<DocumentTypeDto> paginationFilter(Pageable pageable, Optional<DocumentTypeFilterDto> filter);
+    PageResponse<DocumentTypeDto> findAll(DocumentTypeFilterDto filter);
 }

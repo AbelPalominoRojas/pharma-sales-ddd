@@ -1,24 +1,22 @@
-package com.ironman.pharmasales.clients.application.dto.documenttype;
+package com.ironman.pharmasales.clients.domain.model.documenttype;
 
 import com.ironman.pharmasales.shared.domain.page.PageableRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocumentTypeFilterDto extends PageableRequest {
+public class DocumentTypeFilterDomain extends PageableRequest {
     private String name;
     private String description;
     private String sunatCode;
     private Integer sizeDocument;
-    private Boolean isSizeExact;
-    private Boolean isNumeric;
+    private Integer isSizeExact;
+    private Integer isNumeric;
     private String state;
-    private LocalDate createdAtFrom;
-    private LocalDate createdAtTo;
+    private String createdAtFrom;
+    private String createdAtTo;
 }

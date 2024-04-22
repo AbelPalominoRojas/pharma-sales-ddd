@@ -1,11 +1,15 @@
 package com.ironman.pharmasales.clients.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "document_types")
 public class DocumentType {
@@ -23,7 +27,7 @@ public class DocumentType {
     private Integer size;
 
     @Column(name = "is_size_exact")
-    private  Integer isSizeExact;
+    private Integer isSizeExact;
 
     @Column(name = "is_numeric")
     private Integer isNumeric;

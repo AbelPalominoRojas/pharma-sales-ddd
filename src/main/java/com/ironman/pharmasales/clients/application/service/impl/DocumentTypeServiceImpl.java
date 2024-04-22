@@ -3,100 +3,93 @@ package com.ironman.pharmasales.clients.application.service.impl;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeDto;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeFilterDto;
 import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSaveDto;
-import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.ironman.pharmasales.clients.application.dto.documenttype.DocumentTypeSmallDto;
 import com.ironman.pharmasales.clients.application.mapper.DocumentTypeMapper;
 import com.ironman.pharmasales.clients.application.service.DocumentTypeService;
-import com.ironman.pharmasales.clients.infrastructure.persistence.entity.DocumentType;
-import com.ironman.pharmasales.clients.infrastructure.persistence.repository.DocumentTypeRepository;
-import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.clients.domain.model.documenttype.DocumentTypeDomain;
+import com.ironman.pharmasales.clients.domain.model.documenttype.DocumentTypeFilterDomain;
+import com.ironman.pharmasales.clients.domain.port.DocumentTypePort;
+import com.ironman.pharmasales.shared.application.page.PageBuild;
 import com.ironman.pharmasales.shared.application.state.enums.State;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class DocumentTypeServiceImpl implements DocumentTypeService {
-    private final DocumentTypeRepository documentTypeRepository;
+public class DocumentTypeServiceImpl extends PageBuild<DocumentTypeDto> implements DocumentTypeService {
+    private final DocumentTypePort documentTypePort;
     private final DocumentTypeMapper documentTypeMapper;
 
     @Override
     public List<DocumentTypeDto> findAll() {
-        List<DocumentType> documentTypes = (List<DocumentType>) documentTypeRepository.findAll();
-
-        return documentTypeMapper.toDocumentTypeDtos(documentTypes);
+        return documentTypePort.findAll()
+                .stream()
+                .map(documentTypeMapper::toDto)
+                .toList();
     }
 
     @Override
     public DocumentTypeDto findById(Long id) throws DataNotFoundException {
-        DocumentType documentType = documentTypeRepository.findById(id)
+        return documentTypePort.findById(id)
+                .map(documentTypeMapper::toDto)
                 .orElseThrow(() -> documentTypeNotFoundException(id));
-
-        return documentTypeMapper.toDocumentTypeDto(documentType);
     }
 
     @Override
     public DocumentTypeDto create(DocumentTypeSaveDto documentTypeSaveDto) {
-        DocumentType documentTypeSave = documentTypeMapper.toDocumentType(documentTypeSaveDto);
+        DocumentTypeDomain documentTypeSave = documentTypeMapper.toDomain(documentTypeSaveDto);
         documentTypeSave.setState(State.ACTIVE.getValue());
         documentTypeSave.setCreatedAt(LocalDateTime.now());
 
-        DocumentType documentType = documentTypeRepository.save(documentTypeSave);
-
-        return documentTypeMapper.toDocumentTypeDto(documentType);
+        return documentTypeMapper.toDto(documentTypePort.save(documentTypeSave));
     }
 
     @Override
     public DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeSaveDto) throws DataNotFoundException {
-        DocumentType documentTypeDb = documentTypeRepository.findById(id)
+        DocumentTypeDomain documentTypeDb = documentTypePort.findById(id)
                 .orElseThrow(() -> documentTypeNotFoundException(id));
 
-        documentTypeMapper.updateDocumentType(documentTypeDb, documentTypeSaveDto);
+        documentTypeMapper.updateDomain(documentTypeDb, documentTypeSaveDto);
         documentTypeDb.setUpdatedAt(LocalDateTime.now());
 
-        DocumentType documentType = documentTypeRepository.save(documentTypeDb);
-
-        return documentTypeMapper.toDocumentTypeDto(documentType);
+        return documentTypeMapper.toDto(documentTypePort.save(documentTypeDb));
     }
 
     @Override
     public DocumentTypeDto disabled(Long id) throws DataNotFoundException {
-        DocumentType documentTypeDb = documentTypeRepository.findById(id)
+        DocumentTypeDomain documentTypeDb = documentTypePort.findById(id)
                 .orElseThrow(() -> documentTypeNotFoundException(id));
 
         documentTypeDb.setState(State.DISABLE.getValue());
 
-        DocumentType documentType = documentTypeRepository.save(documentTypeDb);
-
-        return documentTypeMapper.toDocumentTypeDto(documentType);
+        return documentTypeMapper.toDto(documentTypePort.save(documentTypeDb));
     }
 
     @Override
-    public List<DocumentTypeSimpleDto> select() {
-        List<DocumentType> documentTypes = documentTypeRepository.findByState(State.ACTIVE.getValue());
-
-        return documentTypeMapper.toDocumentTypeSimpleDtos(documentTypes);
+    public List<DocumentTypeSmallDto> select() {
+        return documentTypePort.findByState(State.ACTIVE.getValue())
+                .stream()
+                .map(documentTypeMapper::toSmallDto)
+                .toList();
     }
 
     @Override
-    public Page<DocumentTypeDto> paginationFilter(Pageable pageable, Optional<DocumentTypeFilterDto> filter) {
-        DocumentTypeFilterDto filterDto = filter.orElse(new DocumentTypeFilterDto());
+    public PageResponse<DocumentTypeDto> findAll(DocumentTypeFilterDto filter) {
+        DocumentTypeFilterDomain filterDomain = documentTypeMapper.toFilter(filter);
 
-        DocumentType documentType = documentTypeMapper.toDocumentType(filterDto);
+        var documentTypePage = documentTypePort.findAll(filterDomain);
 
-        Page<DocumentType> documentTypePage = documentTypeRepository.paginationFilter(pageable, documentType);
+        var documentTypes = documentTypePage.getContent()
+                .stream()
+                .map(documentTypeMapper::toDto)
+                .toList();
 
-        return new PageImpl<>(
-                documentTypeMapper.toDocumentTypeDtos(documentTypePage.getContent()),
-                documentTypePage.getPageable(),
-                documentTypePage.getTotalElements()
-        );
+        return getPage(documentTypePage, documentTypes);
     }
 
 

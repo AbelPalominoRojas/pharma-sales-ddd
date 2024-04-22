@@ -3,7 +3,7 @@ package com.ironman.pharmasales.clients.application.dto.documenttype;
 import lombok.Data;
 
 @Data
-public class DocumentTypeSimpleDto {
+public class DocumentTypeSmallDto {
     private Long id;
     private String name;
 }
