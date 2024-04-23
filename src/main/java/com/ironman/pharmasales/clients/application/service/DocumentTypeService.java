@@ -10,7 +10,7 @@ import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import java.util.List;
 
 public interface DocumentTypeService {
-    List<DocumentTypeDto> findAll();
+    List<DocumentTypeSmallDto> findAll();
 
     DocumentTypeDto findById(Long id) throws DataNotFoundException;
 
@@ -19,8 +19,6 @@ public interface DocumentTypeService {
     DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeSaveDto) throws DataNotFoundException;
 
     DocumentTypeDto disabled(Long id) throws DataNotFoundException;
-
-    List<DocumentTypeSmallDto> select();
 
     PageResponse<DocumentTypeDto> findAll(DocumentTypeFilterDto filter);
 }

@@ -15,23 +15,26 @@ public interface ClientMapper {
 
     ClientDto toDto(ClientDomain client);
 
-    @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
-    ClientMediumDto toMediumDto(ClientDomain client);
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getClientFullName")
+    ClientMediumDto toMediumDto(ClientDomain domain);
 
-    @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
-    ClientSmallDto toSmallDto(ClientDomain client);
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getClientFullName")
+    @Mapping(target = "documentTypeId", source = "documentType.id")
+    ClientSmallDto toSmallDto(ClientDomain domain);
 
-    ClientDomain toDomain(ClientSaveDto clientDto);
+    @Mapping(target = "documentType.id", source = "documentTypeId")
+    ClientDomain toDomain(ClientSaveDto dto);
 
-    void updateDomain(@MappingTarget ClientDomain clientDomain, ClientSaveDto clientDto);
+    @Mapping(target = "documentType.id", source = "documentTypeId")
+    void updateDomain(@MappingTarget ClientDomain domain, ClientSaveDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
     @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")
     ClientFilterDomain toFilter(ClientFilterDto filter);
 
 
-    @Named("getFullName")
-    default String getFullName(ClientDomain client) {
+    @Named("getClientFullName")
+    default String getClientFullName(ClientDomain client) {
         String fullName = client.getName() + " " + client.getLastName();
 
         return fullName.strip();

@@ -15,7 +15,7 @@ public interface DocumentTypePort {
 
     Optional<DocumentTypeDomain> findById(Long id);
 
-    DocumentTypeDomain save(DocumentTypeDomain documentTypeDomain);
+    DocumentTypeDomain save(DocumentTypeDomain domain);
 
     PageResponse<DocumentTypeDomain> findAll(DocumentTypeFilterDomain filter);
 

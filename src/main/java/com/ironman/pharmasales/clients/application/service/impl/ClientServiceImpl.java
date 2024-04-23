@@ -28,10 +28,10 @@ public class ClientServiceImpl extends PageBuild<ClientDto> implements ClientSer
     private final ClientMapper clientMapper;
 
     @Override
-    public List<ClientDto> findAll() {
-        return clientPort.findAll()
+    public List<ClientSmallDto> findAll() {
+        return clientPort.findByState(State.ACTIVE.getValue())
                 .stream()
-                .map(clientMapper::toDto)
+                .map(clientMapper::toSmallDto)
                 .toList();
     }
 
@@ -83,14 +83,6 @@ public class ClientServiceImpl extends PageBuild<ClientDto> implements ClientSer
         clientDb.setState(State.DISABLE.getValue());
 
         return clientMapper.toDto(clientPort.save(clientDb));
-    }
-
-    @Override
-    public List<ClientSmallDto> select() {
-        return clientPort.findByState(State.ACTIVE.getValue())
-                .stream()
-                .map(clientMapper::toSmallDto)
-                .toList();
     }
 
     @Override

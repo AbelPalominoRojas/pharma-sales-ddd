@@ -26,10 +26,10 @@ public class DocumentTypeServiceImpl extends PageBuild<DocumentTypeDto> implemen
     private final DocumentTypeMapper documentTypeMapper;
 
     @Override
-    public List<DocumentTypeDto> findAll() {
-        return documentTypePort.findAll()
+    public List<DocumentTypeSmallDto> findAll() {
+        return documentTypePort.findByState(State.ACTIVE.getValue())
                 .stream()
-                .map(documentTypeMapper::toDto)
+                .map(documentTypeMapper::toSmallDto)
                 .toList();
     }
 
@@ -68,14 +68,6 @@ public class DocumentTypeServiceImpl extends PageBuild<DocumentTypeDto> implemen
         documentTypeDb.setState(State.DISABLE.getValue());
 
         return documentTypeMapper.toDto(documentTypePort.save(documentTypeDb));
-    }
-
-    @Override
-    public List<DocumentTypeSmallDto> select() {
-        return documentTypePort.findByState(State.ACTIVE.getValue())
-                .stream()
-                .map(documentTypeMapper::toSmallDto)
-                .toList();
     }
 
     @Override

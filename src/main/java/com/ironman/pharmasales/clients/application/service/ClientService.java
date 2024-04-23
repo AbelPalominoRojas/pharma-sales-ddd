@@ -7,7 +7,7 @@ import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import java.util.List;
 
 public interface ClientService {
-    List<ClientDto> findAll();
+    List<ClientSmallDto> findAll();
 
     ClientDto findById(Long id) throws DataNotFoundException;
 
@@ -16,8 +16,6 @@ public interface ClientService {
     ClientDto edit(Long id, ClientSaveDto clientBody) throws DataNotFoundException;
 
     ClientDto disabled(Long id) throws DataNotFoundException;
-
-    List<ClientSmallDto> select();
 
     PageResponse<ClientDto> findAll(ClientFilterDto filter);
 

@@ -15,7 +15,7 @@ public interface ClientPort {
 
     Optional<ClientDomain> findById(Long id);
 
-    ClientDomain save(ClientDomain clientDomain);
+    ClientDomain save(ClientDomain domain);
 
     PageResponse<ClientDomain> findAll(ClientFilterDomain filter);
 

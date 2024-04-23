@@ -48,9 +48,9 @@ public class ClientPortImpl extends PageProcessor<ClientDomain> implements Clien
     }
 
     @Override
-    public ClientDomain save(ClientDomain clientDomain) {
+    public ClientDomain save(ClientDomain domain) {
         var savedClient = clientRepository.save(
-                clientMapper.toEntity(clientDomain)
+                clientMapper.toEntity(domain)
         );
 
         return clientMapper.toDomain(savedClient);

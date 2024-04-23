@@ -14,7 +14,6 @@ public class ClientDomain {
     private Long id;
     private String name;
     private String lastName;
-    private Long documentTypeId;
     private DocumentTypeDomain documentType;
     private String documentNumber;
     private String phoneNumber;

@@ -1,9 +1,6 @@
 package com.ironman.pharmasales.clients.infrastructure.web;
 
-import com.ironman.pharmasales.clients.application.dto.client.ClientDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientFilterDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.clients.application.dto.client.ClientSaveDto;
+import com.ironman.pharmasales.clients.application.dto.client.*;
 import com.ironman.pharmasales.clients.application.service.ClientService;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.ArgumentNotValidError;
@@ -36,8 +33,8 @@ public class ClientController {
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
-    public ResponseEntity<List<ClientDto>> findAll() {
-        List<ClientDto> clients = clientService.findAll();
+    public ResponseEntity<List<ClientSmallDto>> findAll() {
+        List<ClientSmallDto> clients = clientService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(clients);

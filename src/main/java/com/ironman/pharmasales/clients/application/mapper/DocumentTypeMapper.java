@@ -20,18 +20,18 @@ public interface DocumentTypeMapper {
     int IS_TRUE = 1;
     boolean IS_ACTIVE = true;
 
-    @Mapping(target = "isSizeExact", expression = "java(documentType.getIsSizeExact() == IS_TRUE)")
-    @Mapping(target = "isNumeric", expression = "java(documentType.getIsNumeric() == IS_TRUE)")
-    DocumentTypeDto toDto(DocumentTypeDomain documentType);
+    @Mapping(target = "isSizeExact", expression = "java(domain.getIsSizeExact() == IS_TRUE)")
+    @Mapping(target = "isNumeric", expression = "java(domain.getIsNumeric() == IS_TRUE)")
+    DocumentTypeDto toDto(DocumentTypeDomain domain);
 
-    DocumentTypeSmallDto toSmallDto(DocumentTypeDomain documentType);
+    DocumentTypeSmallDto toSmallDto(DocumentTypeDomain domain);
 
     @Mapping(target = "isSizeExact", expression = "java(dto.getIsSizeExact() == IS_ACTIVE ? 1: 0)")
     @Mapping(target = "isNumeric", expression = "java(dto.getIsNumeric() == IS_ACTIVE ? 1: 0)")
     DocumentTypeDomain toDomain(DocumentTypeSaveDto dto);
 
     @InheritConfiguration
-    void updateDomain(@MappingTarget DocumentTypeDomain documentType, DocumentTypeSaveDto dto);
+    void updateDomain(@MappingTarget DocumentTypeDomain domain, DocumentTypeSaveDto dto);
 
     @Mapping(target = "isSizeExact", source = ".", qualifiedByName = "getIsSizeExact")
     @Mapping(target = "isNumeric", source = ".", qualifiedByName = "getIsNumeric")

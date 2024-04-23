@@ -12,17 +12,6 @@ import java.util.List;
 public interface DocumentTypeRepository extends CrudRepository<DocumentType, Long> {
     List<DocumentType> findByState(String state);
 
-    @Query(value = "SELECT d FROM DocumentType AS d" +
-            " WHERE ( :#{#documentType.name} IS NULL OR UPPER(d.name) LIKE UPPER(CONCAT('%',:#{#documentType.name},'%')) )" +
-            " AND ( :#{#documentType.description} IS NULL OR UPPER(d.description) LIKE UPPER(CONCAT('%',:#{#documentType.description},'%')) )" +
-            " AND ( :#{#documentType.sunatCode} IS NULL OR UPPER(d.sunatCode) LIKE UPPER(CONCAT('%',:#{#documentType.sunatCode},'%')) )" +
-            " AND ( :#{#documentType.size} IS NULL OR d.size = :#{#documentType.size} )" +
-            " AND ( :#{#documentType.isSizeExact} IS NULL OR d.isSizeExact = :#{#documentType.isSizeExact} )" +
-            " AND ( :#{#documentType.isNumeric} IS NULL OR d.isNumeric = :#{#documentType.isNumeric} )" +
-            " AND ( :#{#documentType.state} IS NULL OR UPPER(d.state) = UPPER(:#{#documentType.state}) )"
-    )
-    Page<DocumentType> paginationFilter(Pageable pageable, @Param("documentType") DocumentType documentType);
-
     @Query(value = "SELECT " +
             " d.id, d.name, d.description, d.sunat_code, d.size, d.is_size_exact, d.is_numeric, d.state, d.created_at, d.updated_at" +
             " FROM document_types d" +

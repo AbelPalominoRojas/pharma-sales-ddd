@@ -47,9 +47,9 @@ public class DocumentTypePortImpl extends PageProcessor<DocumentTypeDomain> impl
     }
 
     @Override
-    public DocumentTypeDomain save(DocumentTypeDomain documentTypeDomain) {
+    public DocumentTypeDomain save(DocumentTypeDomain domain) {
         var savedDocumentType = documentTypeRepository.save(
-                documentTypeMapper.toEntity(documentTypeDomain)
+                documentTypeMapper.toEntity(domain)
         );
 
         return documentTypeMapper.toDomain(savedDocumentType);

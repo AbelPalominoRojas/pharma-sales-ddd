@@ -36,8 +36,8 @@ public class DocumentTypeController {
 
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
-    public ResponseEntity<List<DocumentTypeDto>> findAll() {
-        List<DocumentTypeDto> documentTypes = documentTypeService.findAll();
+    public ResponseEntity<List<DocumentTypeSmallDto>> findAll() {
+        List<DocumentTypeSmallDto> documentTypes = documentTypeService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(documentTypes);
@@ -68,8 +68,8 @@ public class DocumentTypeController {
             )
     )
     @PostMapping
-    public ResponseEntity<DocumentTypeDto> create(@Valid @RequestBody DocumentTypeSaveDto documentTypeSaveDto) {
-        DocumentTypeDto documentType = documentTypeService.create(documentTypeSaveDto);
+    public ResponseEntity<DocumentTypeDto> create(@Valid @RequestBody DocumentTypeSaveDto documentTypeBody) {
+        DocumentTypeDto documentType = documentTypeService.create(documentTypeBody);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(documentType);
@@ -91,9 +91,9 @@ public class DocumentTypeController {
             )
     )
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentTypeDto> edit(@PathVariable("id") Long id, @Valid @RequestBody DocumentTypeSaveDto documentTypeSaveDto)
+    public ResponseEntity<DocumentTypeDto> edit(@PathVariable("id") Long id, @Valid @RequestBody DocumentTypeSaveDto documentTypeBody)
             throws DataNotFoundException {
-        DocumentTypeDto documentType = documentTypeService.edit(id, documentTypeSaveDto);
+        DocumentTypeDto documentType = documentTypeService.edit(id, documentTypeBody);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(documentType);
@@ -113,15 +113,6 @@ public class DocumentTypeController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(documentType);
-    }
-
-    @ApiResponse(responseCode = StatusCode.OK)
-    @GetMapping("/select")
-    public ResponseEntity<List<DocumentTypeSmallDto>> select() {
-        List<DocumentTypeSmallDto> documentTypes = documentTypeService.select();
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(documentTypes);
     }
 
     @ApiResponse(responseCode = StatusCode.OK)
@@ -155,7 +146,7 @@ public class DocumentTypeController {
             @RequestParam(name = "createdAtTo", required = false) LocalDate createdAtTo,
 
             @Parameter(description = "El campo sort debe ser 'id', 'name' o 'createdAt'")
-            @Pattern(regexp = "^(id|name|createdAt)$", message = "La dirección debe ser 'name' o 'createdAt'")
+            @Pattern(regexp = "^(id|name|createdAt)$", message = "La dirección debe ser 'id', 'name' o 'createdAt'")
             @RequestParam(name = "sort", required = false) String sort,
 
             @Parameter(description = "El campo direction debe ser 'ASC' o 'DESC'")

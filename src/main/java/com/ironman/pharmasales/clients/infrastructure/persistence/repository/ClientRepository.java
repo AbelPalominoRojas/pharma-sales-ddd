@@ -13,15 +13,6 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
 
     List<Client> findByState(String state);
 
-    @Query(value = "SELECT c FROM Client AS c" +
-            " WHERE ( :#{#client.name} IS NULL OR UPPER(c.name) LIKE UPPER(CONCAT('%',:#{#client.name},'%')) )" +
-            " AND ( :#{#client.lastName} IS NULL OR UPPER(c.lastName) LIKE UPPER(CONCAT('%',:#{#client.lastName},'%')) )" +
-            " AND ( :#{#client.documentTypeId} IS NULL OR c.documentTypeId = :#{#client.documentTypeId} )" +
-            " AND ( :#{#client.documentNumber} IS NULL OR c.documentNumber LIKE CONCAT('%',:#{#client.documentNumber},'%') )" +
-            " AND ( :#{#client.state} IS NULL OR UPPER(c.state) = UPPER(:#{#client.state}) )"
-    )
-    Page<Client> paginationFilter(Pageable pageable, @Param("client") Client client);
-
     @Query(value = "SELECT " +
             " c.id, c.name, c.last_name, c.document_type_id, c.document_number " +
             " , c.phone_number, c.address ,c.state, c.created_at, c.updated_at " +
