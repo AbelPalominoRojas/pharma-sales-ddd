@@ -1,47 +1,40 @@
 package com.ironman.pharmasales.users.application.mapper;
 
-import com.ironman.pharmasales.users.application.dto.user.UserCreateDto;
-import com.ironman.pharmasales.users.application.dto.user.UserDto;
-import com.ironman.pharmasales.users.application.dto.user.UserSecurityDto;
-import com.ironman.pharmasales.users.infrastructure.persistence.entity.UserEntity;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
-import org.mapstruct.InheritConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import com.ironman.pharmasales.users.application.dto.user.*;
+import com.ironman.pharmasales.users.domain.model.user.UserDomain;
+import com.ironman.pharmasales.users.domain.model.user.UserFilterDomain;
+import org.mapstruct.*;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {StateMapper.class}
+        uses = {StateMapper.class},
+        imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface UserMapper {
 
-    // Dto from Entity Start
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "profileId", source = "profileId")
-    @Mapping(target = "state", source = "state")
-    @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
-    UserDto toUserDto(UserEntity userEntity);
+    UserDto toDto(UserDomain domain);
 
     @InheritConfiguration
     @Mapping(target = "security", ignore = true)
-    UserSecurityDto toUserSecurityDto(UserEntity userEntity);
-    // Dto from Entity End
+    UserSecurityDto toSecurityDto(UserDomain domain);
 
-    // Entity from Dto Start
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "password", source = "password")
-    @Mapping(target = "profileId", source = "profileId")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "state", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    UserEntity toUserEntity(UserCreateDto userCreateDto);
-    // Entity from Dto End
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getUserFullName")
+    UserSmallDto toSmallDto(UserDomain domain);
+
+    UserDomain toDomain(UserCreateDto dto);
+
+    void updateDomain(@MappingTarget UserDomain domain, UserEditDto dto);
+
+    @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
+    @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")
+    UserFilterDomain toFilter(UserFilterDto filter);
+
+    @Named("getUserFullName")
+    default String getUserFullName(UserDomain user) {
+        String fullName = user.getName() + " " + user.getLastName();
+
+        return fullName.strip();
+    }
+
 }

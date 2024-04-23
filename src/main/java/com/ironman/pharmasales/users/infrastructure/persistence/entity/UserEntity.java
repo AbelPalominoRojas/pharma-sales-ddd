@@ -23,11 +23,14 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
 
-
     private String password;
 
     @Column(name = "profile_id")
     private Long profileId;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id", insertable = false, updatable = false)
+    private Profile profile;
 
     private String state;
 

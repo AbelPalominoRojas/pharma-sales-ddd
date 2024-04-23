@@ -38,9 +38,9 @@ public class ProfileController {
     @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
     ResponseEntity<List<ProfileSmallDto>> findAll() {
-        List<ProfileSmallDto> categories = profileService.findAll();
+        List<ProfileSmallDto> profiles = profileService.findAll();
 
-        return ResponseEntity.ok(categories);
+        return ResponseEntity.ok(profiles);
     }
 
 
