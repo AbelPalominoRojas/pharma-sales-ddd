@@ -13,21 +13,21 @@ import org.mapstruct.*;
 )
 public interface UserMapper {
 
-    UserDto toDto(UserDomain domain);
+    UserDto toDto(UserDomain user);
 
     @InheritConfiguration
     @Mapping(target = "security", ignore = true)
-    UserSecurityDto toSecurityDto(UserDomain domain);
+    UserSecurityDto toSecurityDto(UserDomain user);
 
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getUserFullName")
     @Mapping(target = "profileId", source = "profile.id")
-    UserSmallDto toSmallDto(UserDomain domain);
+    UserSmallDto toSmallDto(UserDomain user);
 
     @Mapping(target = "profile.id", source = "profileId")
     UserDomain toDomain(UserCreateDto dto);
 
     @Mapping(target = "profile.id", source = "profileId")
-    void updateDomain(@MappingTarget UserDomain domain, UserEditDto dto);
+    void updateDomain(@MappingTarget UserDomain user, UserEditDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
     @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")

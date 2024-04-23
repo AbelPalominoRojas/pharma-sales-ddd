@@ -16,11 +16,11 @@ public interface ClientMapper {
     ClientDto toDto(ClientDomain client);
 
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getClientFullName")
-    ClientMediumDto toMediumDto(ClientDomain domain);
+    ClientMediumDto toMediumDto(ClientDomain client);
 
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getClientFullName")
     @Mapping(target = "documentTypeId", source = "documentType.id")
-    ClientSmallDto toSmallDto(ClientDomain domain);
+    ClientSmallDto toSmallDto(ClientDomain client);
 
     @Mapping(target = "documentType.id", source = "documentTypeId")
     ClientDomain toDomain(ClientSaveDto dto);

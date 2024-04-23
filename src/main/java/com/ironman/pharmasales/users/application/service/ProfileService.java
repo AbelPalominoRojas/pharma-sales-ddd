@@ -14,9 +14,9 @@ public interface ProfileService {
 
     ProfileDto findById(Long id) throws DataNotFoundException;
 
-    ProfileDto create(ProfileSaveDto ProfileBody);
+    ProfileDto create(ProfileSaveDto profileBody);
 
-    ProfileDto edit(Long id, ProfileSaveDto ProfileBody) throws DataNotFoundException;
+    ProfileDto edit(Long id, ProfileSaveDto profileBody) throws DataNotFoundException;
 
     ProfileDto disabled(Long id) throws DataNotFoundException;
 

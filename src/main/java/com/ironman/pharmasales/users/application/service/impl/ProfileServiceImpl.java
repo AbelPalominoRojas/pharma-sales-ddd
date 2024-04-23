@@ -42,8 +42,8 @@ public class ProfileServiceImpl extends PageBuild<ProfileDto> implements Profile
     }
 
     @Override
-    public ProfileDto create(ProfileSaveDto ProfileBody) {
-        ProfileDomain profileDomain = profileMapper.toDomain(ProfileBody);
+    public ProfileDto create(ProfileSaveDto profileBody) {
+        ProfileDomain profileDomain = profileMapper.toDomain(profileBody);
         profileDomain.setState(State.ACTIVE.getValue());
         profileDomain.setCreatedAt(LocalDateTime.now());
 
@@ -51,11 +51,11 @@ public class ProfileServiceImpl extends PageBuild<ProfileDto> implements Profile
     }
 
     @Override
-    public ProfileDto edit(Long id, ProfileSaveDto ProfileBody) throws DataNotFoundException {
+    public ProfileDto edit(Long id, ProfileSaveDto profileBody) throws DataNotFoundException {
         ProfileDomain profileDomain = profilePort.findById(id)
                 .orElseThrow(getProfileNotFound(id));
 
-        profileMapper.updateDomain(profileDomain, ProfileBody);
+        profileMapper.updateDomain(profileDomain, profileBody);
         profileDomain.setUpdatedAt(LocalDateTime.now());
 
         return profileMapper.toDto(profilePort.save(profileDomain));

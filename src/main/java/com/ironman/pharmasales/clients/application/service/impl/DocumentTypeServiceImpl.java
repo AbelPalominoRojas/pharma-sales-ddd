@@ -41,8 +41,8 @@ public class DocumentTypeServiceImpl extends PageBuild<DocumentTypeDto> implemen
     }
 
     @Override
-    public DocumentTypeDto create(DocumentTypeSaveDto documentTypeSaveDto) {
-        DocumentTypeDomain documentTypeSave = documentTypeMapper.toDomain(documentTypeSaveDto);
+    public DocumentTypeDto create(DocumentTypeSaveDto documentTypeBody) {
+        DocumentTypeDomain documentTypeSave = documentTypeMapper.toDomain(documentTypeBody);
         documentTypeSave.setState(State.ACTIVE.getValue());
         documentTypeSave.setCreatedAt(LocalDateTime.now());
 
@@ -50,11 +50,11 @@ public class DocumentTypeServiceImpl extends PageBuild<DocumentTypeDto> implemen
     }
 
     @Override
-    public DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeSaveDto) throws DataNotFoundException {
+    public DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeBody) throws DataNotFoundException {
         DocumentTypeDomain documentTypeDb = documentTypePort.findById(id)
                 .orElseThrow(() -> documentTypeNotFoundException(id));
 
-        documentTypeMapper.updateDomain(documentTypeDb, documentTypeSaveDto);
+        documentTypeMapper.updateDomain(documentTypeDb, documentTypeBody);
         documentTypeDb.setUpdatedAt(LocalDateTime.now());
 
         return documentTypeMapper.toDto(documentTypePort.save(documentTypeDb));

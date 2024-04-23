@@ -14,9 +14,9 @@ public interface DocumentTypeService {
 
     DocumentTypeDto findById(Long id) throws DataNotFoundException;
 
-    DocumentTypeDto create(DocumentTypeSaveDto documentTypeSaveDto);
+    DocumentTypeDto create(DocumentTypeSaveDto documentTypeBody);
 
-    DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeSaveDto) throws DataNotFoundException;
+    DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeBody) throws DataNotFoundException;
 
     DocumentTypeDto disabled(Long id) throws DataNotFoundException;
 

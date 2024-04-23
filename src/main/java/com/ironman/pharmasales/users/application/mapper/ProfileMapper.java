@@ -17,13 +17,13 @@ import org.mapstruct.MappingTarget;
         imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface ProfileMapper {
-    ProfileDto toDto(ProfileDomain domain);
+    ProfileDto toDto(ProfileDomain profile);
 
-    ProfileSmallDto toSmallDto(ProfileDomain domain);
+    ProfileSmallDto toSmallDto(ProfileDomain profile);
 
     ProfileDomain toDomain(ProfileSaveDto dto);
 
-    void updateDomain(@MappingTarget ProfileDomain domain, ProfileSaveDto dto);
+    void updateDomain(@MappingTarget ProfileDomain profile, ProfileSaveDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
     @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")
