@@ -14,7 +14,7 @@ public interface ProfilePort {
 
     Optional<ProfileDomain> findById(Long id);
 
-    ProfileDomain save(ProfileDomain categoryDomain);
+    ProfileDomain save(ProfileDomain domain);
 
     PageResponse<ProfileDomain> findAll(ProfileFilterDomain filter);
 }

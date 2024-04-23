@@ -16,7 +16,6 @@ public class UserDomain {
     private String lastName;
     private String email;
     private String password;
-    private Long profileId;
     private ProfileDomain profile;
     private String state;
     private LocalDateTime createdAt;

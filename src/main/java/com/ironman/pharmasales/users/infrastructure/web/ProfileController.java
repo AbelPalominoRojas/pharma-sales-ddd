@@ -155,7 +155,7 @@ public class ProfileController {
             @Pattern(regexp = "^(ASC|DESC)$", message = "La dirección debe ser 'ASC' o 'DESC'")
             @RequestParam(name = "direction", required = false) String direction
     ) {
-        var pageable = ProfileFilterDto.builder()
+        var filter = ProfileFilterDto.builder()
                 .page(page)
                 .size(size)
                 .name(name)
@@ -167,7 +167,7 @@ public class ProfileController {
                 .direction(direction)
                 .build();
 
-        PageResponse<ProfileDto> profilePage = profileService.findAll(pageable);
+        PageResponse<ProfileDto> profilePage = profileService.findAll(filter);
 
         return ResponseEntity.ok(profilePage);
     }

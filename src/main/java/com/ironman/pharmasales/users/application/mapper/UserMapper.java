@@ -20,10 +20,13 @@ public interface UserMapper {
     UserSecurityDto toSecurityDto(UserDomain domain);
 
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getUserFullName")
+    @Mapping(target = "profileId", source = "profile.id")
     UserSmallDto toSmallDto(UserDomain domain);
 
+    @Mapping(target = "profile.id", source = "profileId")
     UserDomain toDomain(UserCreateDto dto);
 
+    @Mapping(target = "profile.id", source = "profileId")
     void updateDomain(@MappingTarget UserDomain domain, UserEditDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")

@@ -69,8 +69,8 @@ public class UserController {
             )
     )
     @PostMapping
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto userCreate) throws DataNotFoundException {
-        UserDto user = userService.create(userCreate);
+    public ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto userBody) throws DataNotFoundException {
+        UserDto user = userService.create(userBody);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(user);
@@ -145,14 +145,14 @@ public class UserController {
             @RequestParam(name = "createdAtTo", required = false) LocalDate createdAtTo,
 
             @Parameter(description = "El campo sort debe ser 'id', 'name', 'lastName', 'profileId' o 'createdAt'")
-            @Pattern(regexp = "^(id|name|lastName|profileId|createdAt)$", message = "La dirección debe ser 'name' o 'createdAt'")
+            @Pattern(regexp = "^(id|name|lastName|profileId|createdAt)$", message = "La dirección debe ser 'id', 'name', 'lastName', 'profileId' o 'createdAt'")
             @RequestParam(name = "sort", required = false) String sort,
 
             @Parameter(description = "El campo direction debe ser 'ASC' o 'DESC'")
             @Pattern(regexp = "^(ASC|DESC)$", message = "La dirección debe ser 'ASC' o 'DESC'")
             @RequestParam(name = "direction", required = false) String direction
     ) {
-        var pageable = UserFilterDto.builder()
+        var filter = UserFilterDto.builder()
                 .page(page)
                 .size(size)
                 .name(name)
@@ -166,7 +166,7 @@ public class UserController {
                 .direction(direction)
                 .build();
 
-        var userPage = userService.findAll(pageable);
+        var userPage = userService.findAll(filter);
 
         return ResponseEntity.ok(userPage);
     }

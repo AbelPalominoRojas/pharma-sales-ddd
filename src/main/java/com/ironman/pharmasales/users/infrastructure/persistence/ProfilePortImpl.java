@@ -49,8 +49,8 @@ public class ProfilePortImpl extends PageProcessor<ProfileDomain> implements Pro
     }
 
     @Override
-    public ProfileDomain save(ProfileDomain categoryDomain) {
-        Profile profile = profileMapper.toEntity(categoryDomain);
+    public ProfileDomain save(ProfileDomain domain) {
+        Profile profile = profileMapper.toEntity(domain);
 
         return profileMapper.toDomain(profileRepository.save(profile));
     }

@@ -13,7 +13,6 @@ public class UserDto {
     private String lastName;
     private String email;
     private ProfileSmallDto profile;
-    private Long profileId;
     private State state;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
