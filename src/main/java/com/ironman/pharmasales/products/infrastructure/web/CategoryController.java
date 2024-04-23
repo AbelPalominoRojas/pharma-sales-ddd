@@ -147,14 +147,14 @@ public class CategoryController {
             @RequestParam(name = "createdAtTo", required = false) LocalDate createdAtTo,
 
             @Parameter(description = "El campo sort debe ser 'id', 'name' o 'createdAt'")
-            @Pattern(regexp = "^(id|name|createdAt)$", message = "La dirección debe ser 'name' o 'createdAt'")
+            @Pattern(regexp = "^(id|name|createdAt)$", message = "La dirección debe ser 'id', 'name' o 'createdAt'")
             @RequestParam(name = "sort", required = false) String sort,
 
             @Parameter(description = "El campo direction debe ser 'ASC' o 'DESC'")
             @Pattern(regexp = "^(ASC|DESC)$", message = "La dirección debe ser 'ASC' o 'DESC'")
             @RequestParam(name = "direction", required = false) String direction
     ) {
-        var pageable = CategoryFilterDto.builder()
+        var filter = CategoryFilterDto.builder()
                 .page(page)
                 .size(size)
                 .name(name)
@@ -166,7 +166,7 @@ public class CategoryController {
                 .direction(direction)
                 .build();
 
-        PageResponse<CategoryDto> categoryPage = categoryService.findAll(pageable);
+        PageResponse<CategoryDto> categoryPage = categoryService.findAll(filter);
 
         return ResponseEntity.ok(categoryPage);
     }

@@ -14,7 +14,7 @@ public interface ProductPort {
 
     Optional<ProductDomain> findById(Long id);
 
-    ProductDomain save(ProductDomain ProductDomain);
+    ProductDomain save(ProductDomain domain);
 
     PageResponse<ProductDomain> findAll(ProductFilterDomain filter);
 

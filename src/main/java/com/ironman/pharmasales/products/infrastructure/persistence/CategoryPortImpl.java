@@ -49,10 +49,10 @@ public class CategoryPortImpl extends PageProcessor<CategoryDomain> implements C
     }
 
     @Override
-    public CategoryDomain save(CategoryDomain categoryDomain) {
+    public CategoryDomain save(CategoryDomain domain) {
         return categoryMapper.toDomain(
                 categoryRepository.save(
-                        categoryMapper.toEntity(categoryDomain)
+                        categoryMapper.toEntity(domain)
                 )
         );
     }

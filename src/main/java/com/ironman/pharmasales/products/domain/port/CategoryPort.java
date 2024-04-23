@@ -11,6 +11,6 @@ public interface CategoryPort {
     List<CategoryDomain> findAll();
     List<CategoryDomain> findByState(String state);
     Optional<CategoryDomain> findById(Long id);
-    CategoryDomain save(CategoryDomain categoryDomain);
+    CategoryDomain save(CategoryDomain domain);
     PageResponse<CategoryDomain> findAll(CategoryFilterDomain filter);
 }

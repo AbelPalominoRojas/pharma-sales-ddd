@@ -18,14 +18,15 @@ public interface ProductMapper {
 
     ProductDto toDto(ProductDomain product);
 
-
     ProductSmallDto toSmallDto(ProductDomain product);
 
     ProductMediumDto toMediumDto(ProductDomain product);
 
-    ProductDomain toDomain(ProductSaveDto productDto);
+    @Mapping(target = "subcategory.id", source = "subcategoryId")
+    ProductDomain toDomain(ProductSaveDto dto);
 
-    void updateDomain(@MappingTarget ProductDomain productDomain, ProductSaveDto productDto);
+    @Mapping(target = "subcategory.id", source = "subcategoryId")
+    void updateDomain(@MappingTarget ProductDomain product, ProductSaveDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
     @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")

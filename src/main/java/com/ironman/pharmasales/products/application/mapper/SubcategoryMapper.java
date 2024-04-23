@@ -18,14 +18,14 @@ public interface SubcategoryMapper {
 
     SubcategoryDto toDto(SubcategoryDomain subcategory);
 
-    @Mapping(target = "categoryId", source = "subcategory.id")
+    @Mapping(target = "categoryId", source = "category.id")
     SubcategorySmallDto toSmallDto(SubcategoryDomain subcategory);
 
     SubcategoryMediumDto toMediumDto(SubcategoryDomain subcategory);
 
-    SubcategoryDomain toDomain(SubcategorySaveDto subcategoryDto);
+    SubcategoryDomain toDomain(SubcategorySaveDto dto);
 
-    void updateDomain(@MappingTarget SubcategoryDomain subcategory, SubcategorySaveDto subcategoryDto);
+    void updateDomain(@MappingTarget SubcategoryDomain subcategory, SubcategorySaveDto dto);
 
     @Mapping(target = "createdAtFrom", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtFrom()))")
     @Mapping(target = "createdAtTo", expression = "java(new DateHelper().localDateToString(filter.getCreatedAtTo()))")

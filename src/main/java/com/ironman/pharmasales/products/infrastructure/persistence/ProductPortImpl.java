@@ -49,10 +49,10 @@ public class ProductPortImpl extends PageProcessor<ProductDomain> implements Pro
     }
 
     @Override
-    public ProductDomain save(ProductDomain ProductDomain) {
+    public ProductDomain save(ProductDomain domain) {
         return productMapper.toDomain(
                 productRepository.save(
-                        productMapper.toEntity(ProductDomain)
+                        productMapper.toEntity(domain)
                 )
         );
     }

@@ -14,7 +14,7 @@ public interface SubcategoryPort {
 
     Optional<SubcategoryDomain> findById(Long id);
 
-    SubcategoryDomain save(SubcategoryDomain SubcategoryDomain);
+    SubcategoryDomain save(SubcategoryDomain domain);
 
     PageResponse<SubcategoryDomain> findAll(SubcategoryFilterDomain filter);
 }

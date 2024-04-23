@@ -52,10 +52,10 @@ public class SubcategoryPortImpl extends PageProcessor<SubcategoryDomain> implem
 
 
     @Override
-    public SubcategoryDomain save(SubcategoryDomain SubcategoryDomain) {
+    public SubcategoryDomain save(SubcategoryDomain domain) {
         return subcategoryMapper.toDomain(
                 subcategoryRepository.save(
-                        subcategoryMapper.toEntity(SubcategoryDomain)
+                        subcategoryMapper.toEntity(domain)
                 )
         );
     }
