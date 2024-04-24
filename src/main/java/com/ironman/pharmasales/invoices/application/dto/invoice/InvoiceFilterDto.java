@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.invoice;
+package com.ironman.pharmasales.invoices.application.dto.invoice;
 
 import lombok.Data;
 

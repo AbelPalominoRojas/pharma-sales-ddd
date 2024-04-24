@@ -1,6 +1,6 @@
-package com.ironman.pharmasales.old.application.dto.invoice;
+package com.ironman.pharmasales.invoices.application.dto.invoice;
 
-import com.ironman.pharmasales.old.application.dto.invoicedetail.InvoiceDetailSaveDto;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailSaveDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

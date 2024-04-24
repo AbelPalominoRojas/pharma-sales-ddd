@@ -1,8 +1,8 @@
-package com.ironman.pharmasales.old.application.service;
+package com.ironman.pharmasales.invoices.application.service;
 
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceFilterDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceSaveDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

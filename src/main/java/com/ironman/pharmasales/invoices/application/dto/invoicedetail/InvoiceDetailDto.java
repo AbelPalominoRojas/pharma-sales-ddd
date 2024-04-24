@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.invoicedetail;
+package com.ironman.pharmasales.invoices.application.dto.invoicedetail;
 
 import com.ironman.pharmasales.products.application.dto.product.ProductMediumDto;
 import com.ironman.pharmasales.shared.application.state.enums.State;

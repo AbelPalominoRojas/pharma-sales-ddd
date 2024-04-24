@@ -1,11 +1,10 @@
-package com.ironman.pharmasales.old.application.dto.invoice.mapper;
+package com.ironman.pharmasales.invoices.application.mapper;
 
 import com.ironman.pharmasales.clients.application.mapper.ClientMapper;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceFilterDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceSaveDto;
-import com.ironman.pharmasales.old.application.dto.invoicedetail.mapper.InvoiceDetailMapper;
-import com.ironman.pharmasales.old.persistence.entity.Invoice;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
+import com.ironman.pharmasales.invoices.infrastructure.persistence.entity.Invoice;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 

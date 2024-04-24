@@ -1,7 +1,7 @@
-package com.ironman.pharmasales.old.application.dto.invoice;
+package com.ironman.pharmasales.invoices.application.dto.invoice;
 
 import com.ironman.pharmasales.clients.application.dto.client.ClientMediumDto;
-import com.ironman.pharmasales.old.application.dto.invoicedetail.InvoiceDetailDto;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailDto;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.Data;
 

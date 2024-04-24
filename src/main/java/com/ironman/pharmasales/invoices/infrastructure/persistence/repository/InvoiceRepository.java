@@ -1,6 +1,6 @@
-package com.ironman.pharmasales.old.persistence.repository;
+package com.ironman.pharmasales.invoices.infrastructure.persistence.repository;
 
-import com.ironman.pharmasales.old.persistence.entity.Invoice;
+import com.ironman.pharmasales.invoices.infrastructure.persistence.entity.Invoice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

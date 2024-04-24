@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.application.dto.invoicedetail;
+package com.ironman.pharmasales.invoices.application.dto.invoicedetail;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.old.persistence.entity;
+package com.ironman.pharmasales.invoices.infrastructure.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

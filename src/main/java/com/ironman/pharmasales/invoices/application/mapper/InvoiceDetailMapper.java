@@ -1,9 +1,9 @@
-package com.ironman.pharmasales.old.application.dto.invoicedetail.mapper;
+package com.ironman.pharmasales.invoices.application.mapper;
 
-import com.ironman.pharmasales.old.application.dto.invoicedetail.InvoiceDetailDto;
-import com.ironman.pharmasales.old.application.dto.invoicedetail.InvoiceDetailSaveDto;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailDto;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailSaveDto;
 import com.ironman.pharmasales.products.application.mapper.ProductMapper;
-import com.ironman.pharmasales.old.persistence.entity.InvoiceDetail;
+import com.ironman.pharmasales.invoices.infrastructure.persistence.entity.InvoiceDetail;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
 import org.mapstruct.*;
 

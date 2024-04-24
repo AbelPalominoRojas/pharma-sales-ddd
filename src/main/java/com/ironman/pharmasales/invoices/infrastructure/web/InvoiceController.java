@@ -1,9 +1,9 @@
-package com.ironman.pharmasales.old.expose.web;
+package com.ironman.pharmasales.invoices.infrastructure.web;
 
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceFilterDto;
-import com.ironman.pharmasales.old.application.dto.invoice.InvoiceSaveDto;
-import com.ironman.pharmasales.old.application.service.InvoiceService;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto;
+import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
+import com.ironman.pharmasales.invoices.application.service.InvoiceService;
 import com.ironman.pharmasales.shared.infrastructure.web.constant.StatusCode;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
 import com.ironman.pharmasales.shared.domain.exception.model.GeneralError;
