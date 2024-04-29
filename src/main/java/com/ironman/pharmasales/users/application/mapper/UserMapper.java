@@ -8,7 +8,7 @@ import org.mapstruct.*;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {StateMapper.class},
+        uses = {StateMapper.class, ProfileMapper.class},
         imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface UserMapper {
@@ -18,6 +18,9 @@ public interface UserMapper {
     @InheritConfiguration
     @Mapping(target = "security", ignore = true)
     UserSecurityDto toSecurityDto(UserDomain user);
+
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getUserFullName")
+    UserMediumDto toMediumDto(UserDomain user);
 
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getUserFullName")
     @Mapping(target = "profileId", source = "profile.id")

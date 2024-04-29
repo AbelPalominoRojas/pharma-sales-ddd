@@ -4,70 +4,46 @@ import com.ironman.pharmasales.clients.application.mapper.ClientMapper;
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceDto;
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto;
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
-import com.ironman.pharmasales.invoices.infrastructure.persistence.entity.Invoice;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailDto;
+import com.ironman.pharmasales.invoices.application.dto.invoicedetail.InvoiceDetailSaveDto;
+import com.ironman.pharmasales.invoices.domain.model.InvoiceDetailDomain;
+import com.ironman.pharmasales.invoices.domain.model.InvoiceDomain;
+import com.ironman.pharmasales.invoices.domain.model.InvoiceFilterDomain;
+import com.ironman.pharmasales.products.application.mapper.ProductMapper;
 import com.ironman.pharmasales.shared.application.state.mapper.StateMapper;
-import org.mapstruct.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import com.ironman.pharmasales.users.application.mapper.UserMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {StateMapper.class, ClientMapper.class, InvoiceDetailMapper.class}
+        uses = {StateMapper.class, ClientMapper.class, UserMapper.class, ProductMapper.class},
+        imports = {com.ironman.pharmasales.shared.application.date.DateHelper.class}
 )
 public interface InvoiceMapper {
-    // Dto from Entity Start
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "invoiceDate", source = "invoiceDate")
-    @Mapping(target = "client", source = "client")
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "invoiceDetails", source = "invoiceDetails")
-    @Mapping(target = "state", source = "state")
-    @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
-    InvoiceDto toInvoiceDto(Invoice invoice);
 
-    List<InvoiceDto> toInvoiceDtos(List<Invoice> invoices);
-    // Dto from Entity End
+    InvoiceDto toDto(InvoiceDomain invoice);
 
-    // Entity from Dto Start
-    @Mapping(target = "invoiceDate", source = "invoiceDate")
-    @Mapping(target = "clientId", source = "clientId")
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "invoiceDetails", source = "invoiceDetails")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "client", ignore = true)
-    @Mapping(target = "state", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    Invoice toInvoice(InvoiceSaveDto invoiceSaveDto);
+    @Mapping(target = "client.id", source = "clientId")
+    @Mapping(target = "user.id", source = "userId")
+    InvoiceDomain toDomain(InvoiceSaveDto dto);
 
-    @InheritConfiguration
-    void updateInvoice(@MappingTarget Invoice invoice, InvoiceSaveDto invoiceSaveDto);
+    @Mapping(target = "client.id", source = "clientId")
+    @Mapping(target = "user.id", source = "userId")
+    void updateDomain(@MappingTarget InvoiceDomain domain, InvoiceSaveDto dto);
 
-    @Mapping(target = "invoiceDate", source = "invoiceDate", qualifiedByName = "getInvoiceDate")
-    @Mapping(target = "clientId", source = "clientId")
-    @Mapping(target = "state", source = "state")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "userId", ignore = true)
-    @Mapping(target = "invoiceDetails", ignore = true)
-    @Mapping(target = "client", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    Invoice toInvoice(InvoiceFilterDto invoiceFilterDto);
+    @Mapping(target = "invoiceDateFrom", expression = "java(new DateHelper().localDateToString(filter.getInvoiceDateFrom()))")
+    @Mapping(target = "invoiceDateTo", expression = "java(new DateHelper().localDateToString(filter.getInvoiceDateTo()))")
+    InvoiceFilterDomain toFilter(InvoiceFilterDto filter);
 
-    @Named("getInvoiceDate")
-    default LocalDateTime getInvoiceDate(LocalDate invoiceDate) {
-        LocalDateTime dateTime = null;
+    InvoiceDetailDto toDetailDto(InvoiceDetailDomain detail);
 
-        if (Optional.ofNullable(invoiceDate).isPresent())
-            dateTime = invoiceDate.atTime(LocalTime.now());
+    @Mapping(target = "product.id", source = "productId")
+    InvoiceDetailDomain toDetailDomain(InvoiceDetailSaveDto detailDto);
 
-        return dateTime;
-    }
-    // Entity from Dto End
+    @Mapping(target = "product.id", source = "productId")
+    void updateDetailDomain(@MappingTarget InvoiceDetailDomain domain, InvoiceDetailSaveDto detailDto);
 
 }

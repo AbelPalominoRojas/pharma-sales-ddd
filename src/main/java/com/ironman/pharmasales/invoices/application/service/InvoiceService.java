@@ -4,11 +4,9 @@ import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceDto;
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto;
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
 import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InvoiceService {
 
@@ -22,5 +20,5 @@ public interface InvoiceService {
 
     InvoiceDto disabled(Long id) throws DataNotFoundException;
 
-    Page<InvoiceDto> paginationFilter(Pageable pageable, Optional<InvoiceFilterDto> filter);
+    PageResponse<InvoiceDto> findAll(InvoiceFilterDto filter);
 }

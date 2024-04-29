@@ -5,91 +5,81 @@ import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceFilterDto
 import com.ironman.pharmasales.invoices.application.dto.invoice.InvoiceSaveDto;
 import com.ironman.pharmasales.invoices.application.mapper.InvoiceMapper;
 import com.ironman.pharmasales.invoices.application.service.InvoiceService;
-import com.ironman.pharmasales.invoices.infrastructure.persistence.entity.Invoice;
-import com.ironman.pharmasales.invoices.infrastructure.persistence.repository.InvoiceDetailRepository;
-import com.ironman.pharmasales.invoices.infrastructure.persistence.repository.InvoiceRepository;
-import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.invoices.domain.model.InvoiceDomain;
+import com.ironman.pharmasales.invoices.domain.model.InvoiceFilterDomain;
+import com.ironman.pharmasales.invoices.domain.port.InvoicePort;
+import com.ironman.pharmasales.shared.application.page.PageBuild;
 import com.ironman.pharmasales.shared.application.state.enums.State;
+import com.ironman.pharmasales.shared.domain.exception.DataNotFoundException;
+import com.ironman.pharmasales.shared.domain.page.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class InvoiceServiceImpl implements InvoiceService {
-    private final InvoiceRepository invoiceRepository;
-    private final InvoiceDetailRepository invoiceDetailRepository;
+public class InvoiceServiceImpl extends PageBuild<InvoiceDto> implements InvoiceService {
+    private final InvoicePort invoicePort;
     private final InvoiceMapper invoiceMapper;
 
     @Override
     public List<InvoiceDto> findAll() {
-        List<Invoice> invoices = (List<Invoice>) invoiceRepository.findAll();
-
-        return invoiceMapper.toInvoiceDtos(invoices);
+        return invoicePort.findAll()
+                .stream()
+                .map(invoiceMapper::toDto)
+                .toList();
     }
 
     @Override
     public InvoiceDto findById(Long id) throws DataNotFoundException {
-        Invoice invoice = invoiceRepository.findById(id)
+        InvoiceDomain invoice = invoicePort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Venta no encontrado para el id: " + id));
 
-        return invoiceMapper.toInvoiceDto(invoice);
+        return invoiceMapper.toDto(invoice);
     }
 
     @Override
     public InvoiceDto create(InvoiceSaveDto invoiceSaveDto) throws DataNotFoundException {
 
-        Invoice invoiceSave = invoiceMapper.toInvoice(invoiceSaveDto);
+        InvoiceDomain invoiceSave = invoiceMapper.toDomain(invoiceSaveDto);
 
         invoiceSave.setState(State.ACTIVE.getValue());
         invoiceSave.setCreatedAt(LocalDateTime.now());
 
-        invoiceSave.getInvoiceDetails().forEach(detail ->{
+        invoiceSave.getInvoiceDetails().forEach(detail -> {
             detail.setInvoice(invoiceSave);
             detail.setState(State.ACTIVE.getValue());
             detail.setCreatedAt(LocalDateTime.now());
         });
 
-        Invoice invoice = invoiceRepository.save(invoiceSave);
-
-        return invoiceMapper.toInvoiceDto(invoice);
+        return invoiceMapper.toDto(invoicePort.save(invoiceSave));
     }
 
-    @Transactional
+
     @Override
     public InvoiceDto edit(Long id, InvoiceSaveDto invoiceSaveDto) throws DataNotFoundException {
-        Invoice invoiceDb = invoiceRepository.findById(id)
+        InvoiceDomain invoiceDb = invoicePort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Venta no encontrado para el id: " + id));
 
-        invoiceMapper.updateInvoice(invoiceDb, invoiceSaveDto);
+        invoiceMapper.updateDomain(invoiceDb, invoiceSaveDto);
 
         invoiceDb.setUpdatedAt(LocalDateTime.now());
 
-        invoiceDb.getInvoiceDetails().forEach(detail ->{
-            detail.getId().setInvoiceId(id);
+        invoiceDb.getInvoiceDetails().forEach(detail -> {
             detail.setInvoice(invoiceDb);
             detail.setState(State.ACTIVE.getValue());
             detail.setCreatedAt(LocalDateTime.now());
             detail.setUpdatedAt(LocalDateTime.now());
         });
 
-        invoiceDetailRepository.saveAll(invoiceDb.getInvoiceDetails());
-
-        Invoice invoice = invoiceRepository.save(invoiceDb);
-
-        return invoiceMapper.toInvoiceDto(invoice);
+        return invoiceMapper.toDto(invoicePort.save(invoiceDb));
     }
 
     @Override
     public InvoiceDto disabled(Long id) throws DataNotFoundException {
-        Invoice invoiceDb = invoiceRepository.findById(id)
+        InvoiceDomain invoiceDb = invoicePort.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Venta no encontrado para el id: " + id));
 
         invoiceDb.setState(State.DISABLE.getValue());
@@ -99,24 +89,20 @@ public class InvoiceServiceImpl implements InvoiceService {
             detail.setState(State.DISABLE.getValue());
         });
 
-
-        Invoice invoice = invoiceRepository.save(invoiceDb);
-
-        return invoiceMapper.toInvoiceDto(invoice);
+        return invoiceMapper.toDto(invoicePort.save(invoiceDb));
     }
 
     @Override
-    public Page<InvoiceDto> paginationFilter(Pageable pageable, Optional<InvoiceFilterDto> filter) {
-        InvoiceFilterDto filterDto = filter.orElse(new InvoiceFilterDto());
+    public PageResponse<InvoiceDto> findAll(InvoiceFilterDto filter) {
+        InvoiceFilterDomain filterDomain = invoiceMapper.toFilter(filter);
 
-        Invoice invoice = invoiceMapper.toInvoice(filterDto);
+        var invoicePage = invoicePort.findAll(filterDomain);
 
-        Page<Invoice> invoicePage = invoiceRepository.paginationFilter(pageable, invoice);
+        var invoices = invoicePage.getContent()
+                .stream()
+                .map(invoiceMapper::toDto)
+                .toList();
 
-        return new PageImpl<>(
-                invoiceMapper.toInvoiceDtos(invoicePage.getContent()),
-                invoicePage.getPageable(),
-                invoicePage.getTotalElements()
-        );
+        return getPage(invoicePage, invoices);
     }
 }

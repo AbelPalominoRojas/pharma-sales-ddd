@@ -1,6 +1,7 @@
 package com.ironman.pharmasales.invoices.infrastructure.persistence.entity;
 
 import com.ironman.pharmasales.clients.infrastructure.persistence.entity.Client;
+import com.ironman.pharmasales.users.infrastructure.persistence.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,6 +29,10 @@ public class Invoice {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserEntity user;
 
     private String state;
 
