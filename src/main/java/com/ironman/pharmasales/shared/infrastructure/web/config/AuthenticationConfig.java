@@ -1,6 +1,6 @@
 package com.ironman.pharmasales.shared.infrastructure.web.config;
 
-import com.ironman.pharmasales.users.infrastructure.persistence.repository.UserRepository;
+import com.ironman.pharmasales.users.domain.port.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AuthenticationConfig {
 
-    private final UserRepository userRepository;
+    private final UserPort userPort;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,7 +25,7 @@ public class AuthenticationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findByEmail(username)
+        return username -> (UserDetails) userPort.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
