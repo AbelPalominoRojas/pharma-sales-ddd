@@ -1,7 +1,6 @@
-package com.ironman.pharmasales.persistence.repository;
+package com.ironman.pharmasales.products.infrastructure.persistence.repository;
 
 import com.ironman.pharmasales.products.infrastructure.persistence.entity.Category;
-import com.ironman.pharmasales.products.infrastructure.persistence.repository.CategoryRepository;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

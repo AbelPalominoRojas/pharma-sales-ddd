@@ -1,4 +1,4 @@
-package com.ironman.pharmasales.expose.web;
+package com.ironman.pharmasales.products.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ironman.pharmasales.products.application.dto.category.CategorySaveDto;
@@ -6,12 +6,9 @@ import com.ironman.pharmasales.products.infrastructure.persistence.entity.Catego
 import com.ironman.pharmasales.products.infrastructure.persistence.repository.CategoryRepository;
 import com.ironman.pharmasales.shared.application.state.enums.State;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,15 +18,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.of;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @Slf4j
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CategoryControllerTest {
 
     @Autowired
@@ -40,19 +44,6 @@ class CategoryControllerTest {
 
     @MockBean
     private CategoryRepository categoryRepository;
-
-    private AutoCloseable closeable;
-
-
-    @BeforeEach
-    void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
-    }
 
     @Test
     void canFindCategoryById() throws Exception {
@@ -65,19 +56,20 @@ class CategoryControllerTest {
                 .state(State.ACTIVE.getValue())
                 .build();
 
-        Mockito.when(categoryRepository.findById(id))
+        when(categoryRepository.findById(id))
                 .thenReturn(Optional.of(category));
 
         // when
-        var uri = MockMvcRequestBuilders.get("/categories/{id}", id);
-        ResultActions response = mockMvc.perform(uri);
-        log.info("canFindCategoryById: " + response);
+        var request = MockMvcRequestBuilders
+                .get("/categories/{id}", id);
+
+        ResultActions response = mockMvc.perform(request);
 
         // then
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(category.getId().intValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(category.getName())));
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id", is(category.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(category.getName())));
 
     }
 
@@ -93,7 +85,7 @@ class CategoryControllerTest {
         Category category2 = Category.builder()
                 .id(2L)
                 .name("Categoria 2")
-                .state(State.DISABLE.getValue())
+                .state(State.ACTIVE.getValue())
                 .build();
 
         Category category3 = Category.builder()
@@ -102,23 +94,23 @@ class CategoryControllerTest {
                 .state(State.ACTIVE.getValue())
                 .build();
 
-        Mockito.when(categoryRepository.findAll())
+        when(categoryRepository.findByState(State.ACTIVE.getValue()))
                 .thenReturn(List.of(category1, category2, category3));
 
         // when
-        var uri = MockMvcRequestBuilders.get("/categories");
-        ResultActions response = mockMvc.perform(uri);
+        var request = MockMvcRequestBuilders
+                .get("/categories");
 
-        log.info("canFindAllCategories: " + response);
-
+        ResultActions response = mockMvc.perform(request);
 
         // then
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", CoreMatchers.is(category1.getName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", CoreMatchers.is(category2.getName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].state.value", CoreMatchers.is(State.DISABLE.getValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].name", CoreMatchers.is(category3.getName())));
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].name", is(category1.getName())))
+                .andExpect(jsonPath("$[1].name", is(category2.getName())))
+                .andExpect(jsonPath("$[2].name", is(category3.getName())))
+                .andExpect(jsonPath("$.length()", is(3)))
+        ;
     }
 
     @Test
@@ -131,7 +123,7 @@ class CategoryControllerTest {
                 .state(State.ACTIVE.getValue())
                 .build();
 
-        Mockito.when(categoryRepository.save(Mockito.any(Category.class)))
+        when(categoryRepository.save(any(Category.class)))
                 .thenReturn(category);
 
         // when
@@ -140,18 +132,17 @@ class CategoryControllerTest {
                 .description(category.getDescription())
                 .build();
 
-        var uri = MockMvcRequestBuilders.post("/categories")
+        var request = MockMvcRequestBuilders
+                .post("/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(categoryDto));
 
-        ResultActions response = mockMvc.perform(uri);
-        log.info("canCreateCategory: " + response);
-
+        ResultActions response = mockMvc.perform(request);
 
         // then
-        response.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name",CoreMatchers.is(category.getName())));
+        response.andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(jsonPath("$.name", is(category.getName())));
 
     }
 
@@ -166,10 +157,10 @@ class CategoryControllerTest {
                 .state(State.ACTIVE.getValue())
                 .build();
 
-        Mockito.when(categoryRepository.findById(id))
-                        .thenReturn(Optional.of(category));
+        when(categoryRepository.findById(id))
+                .thenReturn(Optional.of(category));
 
-        Mockito.when(categoryRepository.save(Mockito.any(Category.class)))
+        when(categoryRepository.save(any(Category.class)))
                 .thenReturn(category);
 
         // when
@@ -178,18 +169,17 @@ class CategoryControllerTest {
                 .description(category.getDescription())
                 .build();
 
-        var uri = MockMvcRequestBuilders.put("/categories/{id}", category.getId())
+        var request = MockMvcRequestBuilders
+                .put("/categories/{id}", category.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(categoryDto));
 
-        ResultActions response = mockMvc.perform(uri);
-        log.info("canCreateCategory: " + response);
-
+        ResultActions response = mockMvc.perform(request);
 
         // then
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name",CoreMatchers.is(category.getName())));
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.name", is(category.getName())));
 
     }
 
@@ -201,23 +191,24 @@ class CategoryControllerTest {
                 .id(id)
                 .name("Categoria")
                 .description("Detalle")
-                .state(State.ACTIVE.getValue())
+                .state(State.DISABLE.getValue())
                 .build();
 
-        Mockito.when(categoryRepository.findById(id))
-                .thenReturn(Optional.of(category));
+        when(categoryRepository.findById(id))
+                .thenReturn(of(category));
 
-        Mockito.when(categoryRepository.save(Mockito.any(Category.class)))
+        when(categoryRepository.save(any(Category.class)))
                 .thenReturn(category);
 
         // when
-        MockHttpServletRequestBuilder uri = MockMvcRequestBuilders.delete("/categories/{id}", category.getId());
-        ResultActions response = mockMvc.perform(uri);
-        log.info("canDisableCategory: " + response);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete("/categories/{id}", category.getId());
+
+        ResultActions response = mockMvc.perform(request);
 
         // then
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.state.value", CoreMatchers.is(State.DISABLE.getValue())));
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.state.value", is(State.DISABLE.getValue())));
     }
 }
